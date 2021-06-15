@@ -1,15 +1,21 @@
-import logo from './logo.svg';
 import './App.css';
 import { Layout } from 'antd';
+import Navbar from './components/navbar/navbar';
+import React, {useEffect} from 'react';
+import faker from 'faker';
 
 function App() {
   
-  const { Header, Footer, Sider, Content } = Layout;
+  const { Footer, Sider, Content } = Layout;
+
+  useEffect(() => {
+    console.log(faker.commerce.product())
+  }, [])
 
   return (
 <>
     <Layout>
-      <Header>Header</Header>
+      <Navbar />
       <Layout className="layout-body">
         <Sider>Sider</Sider>
         <Content>Content</Content>
