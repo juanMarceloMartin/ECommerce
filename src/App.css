@@ -14,7 +14,7 @@
 .ant-layout-header,
 .ant-layout-footer {
   color: #fff;
-  background: black;
+  background: #7bb074;
 }
 [data-theme="dark"] .ant-layout-header {
   background: #6aa0c7;
@@ -28,7 +28,7 @@
 .ant-layout-sider {
   color: black;
   line-height: 120px;
-  background: #E8E8E8;
+  background: #d4ebd0;
 }
 [data-theme="dark"] .ant-layout-sider {
   background: #3499ec;
@@ -37,7 +37,7 @@
   min-height: 120px;
   color: #fff;
   line-height: 120px;
-  background: white;
+  background: #d4ebd0;
 }
 [data-theme="dark"] .ant-layout-content {
   background: #107bcb;
