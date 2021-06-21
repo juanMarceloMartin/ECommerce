@@ -28,14 +28,14 @@ const ProductCard: FC<any> = ({ product }) => {
               <CardActionArea>
                 <CardMedia
                   component="img"
-                  alt="Contemplative Reptile"
+                  alt={product.title}
                   height="284"
                   image={product.image}
-                  title="Contemplative Reptile"
+                  title={product.title}
                 />
                 <CardContent>
                   <Typography noWrap component="h2">
-                  {product.name}
+                  {product.title}
                   </Typography>
                   <Typography variant="h5" component="h2">
                     $ {product.price}

@@ -1,5 +1,5 @@
 import IReducerAction from '../commons/interfaces/IReducerAction';
-import { ProductsApi } from '../api/fake/products-api';
+import { ProductsApi } from '../api/products-api';
 
 const PRODUCTS_INITIAL_STATE = {
     list: []
@@ -25,7 +25,7 @@ export const productsReducer = (state = PRODUCTS_INITIAL_STATE, action: IReducer
 const getList = () => {
     return async (dispatch: any) => {
         try {
-            const response = await ProductsApi.getList(8);
+            const response = await ProductsApi.getList();
             dispatch({type: PRODUCTS_REDUCER_TYPES.SET_LIST, payload: response})
         } catch (error) {
             console.log(error)

@@ -5,11 +5,25 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import { store } from './store';
+import { ThemeProvider, createMuiTheme } from '@material-ui/core';
+
+const theme = createMuiTheme({
+    palette: {
+      primary: {
+        main: '#212121',
+      },
+      secondary: {
+        main: '#e57373',
+      },
+    },
+  })
 
 ReactDOM.render(
   <Provider store={store}>
     <React.StrictMode>
-      <App />
+      <ThemeProvider theme={theme}>
+        <App />
+      </ThemeProvider>
     </React.StrictMode>
   </Provider>,
   document.getElementById('root')
