@@ -2,16 +2,11 @@ import './App.css';
 import { Layout } from 'antd';
 import Navbar from './components/navbar/navbar';
 import CardsContainer from './components/cards-container/cards-container';
-import React, {useEffect} from 'react';
-import faker from 'faker';
+import React from 'react';
 
 function App() {
   
   const { Footer, Sider } = Layout;
-
-  useEffect(() => {
-    console.log(faker.commerce.product())
-  }, [])
 
   return (
   <>

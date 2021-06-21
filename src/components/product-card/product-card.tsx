@@ -1,12 +1,9 @@
 import React, {FC} from 'react';
+import { useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/core';
 import { Card, CardActionArea, CardActions, CardContent, CardMedia, Button, Typography, Grid } from '@material-ui/core';
-
-interface IProps {
-  image: string
-  name: string
-  price: number
-}
+import { CART_REDUCER_TYPES } from '../../reducers/cart-reducer';
+import ICartItem from '../../commons/interfaces/ICartItem';
 
 const useStyles = makeStyles({
     root: {
@@ -15,8 +12,14 @@ const useStyles = makeStyles({
     },
   });
 
-const ProductCard: FC<IProps> = ({image, name, price}) => {
+const ProductCard: FC<any> = ({ product }) => {
     const classes = useStyles();
+    const dispatch = useDispatch();
+
+    const addToCart = () => {
+      const cartItem: ICartItem = {...product, quantity: 1};
+      dispatch({type: CART_REDUCER_TYPES.ADD_PRODUCT, payload: cartItem})
+    }
 
     return (
       <>
@@ -27,15 +30,15 @@ const ProductCard: FC<IProps> = ({image, name, price}) => {
                   component="img"
                   alt="Contemplative Reptile"
                   height="284"
-                  image={image}
+                  image={product.image}
                   title="Contemplative Reptile"
                 />
                 <CardContent>
                   <Typography noWrap component="h2">
-                  {name}
+                  {product.name}
                   </Typography>
                   <Typography variant="h5" component="h2">
-                    $ {price}
+                    $ {product.price}
                   </Typography>
                   <Typography variant="body2" color="textSecondary"   component="p">
                     
@@ -43,7 +46,7 @@ const ProductCard: FC<IProps> = ({image, name, price}) => {
                 </CardContent>
               </CardActionArea>
               <CardActions>
-                <Button size="small" color="primary">
+                <Button onClick={addToCart} size="small" color="primary">
                   AGREGAR AL CARRITO
                 </Button>
               </CardActions>
