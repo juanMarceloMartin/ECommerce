@@ -6,7 +6,6 @@ import IProductState from '../../commons/interfaces/IProductState';
 import { Layout } from 'antd';
 import ProductCard from '../product-card/product-card';
 import { Grid } from '@material-ui/core';
-import { ProductsApi } from '../../api/products-api';
 
 const CardsContainer: FC = () => {
     const { Content } = Layout;
@@ -15,7 +14,6 @@ const CardsContainer: FC = () => {
 
     useEffect(() => {
         dispatch(ProductsReducerActions.getList());
-        console.log(ProductsApi.getList())
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 

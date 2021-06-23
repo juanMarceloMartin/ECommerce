@@ -1,7 +1,9 @@
 import { FC } from 'react';
 import { Button, makeStyles } from '@material-ui/core';
+import { useDispatch } from 'react-redux';
 import ICartItem from '../../commons/interfaces/ICartItem';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
+import { CartReducerActions } from '../../reducers/cart-reducer';
 
 type Props = {
     item: ICartItem;
@@ -12,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
         width: "100%",
     },
     title: {
-        padding: "0 10px",
+        paddingTop: "15px",
     },
     infoContainer: {
         float: "left",
@@ -21,7 +23,6 @@ const useStyles = makeStyles((theme) => ({
     information: {
         display: "flex",
         justifyContent: "space-between",
-        paddingLeft: "10px",
         marginBottom: "2px"
     },
     imgContainer: {
@@ -31,6 +32,7 @@ const useStyles = makeStyles((theme) => ({
     },
     img: {
         maxWidth: "60px",
+        maxHeight: "85px",
         objectFit: "cover",
         marginLeft: "40px",
         marginTop: "5px",
@@ -46,11 +48,17 @@ const useStyles = makeStyles((theme) => ({
 
 const CartItem: FC<Props> = ({ item }) => {
     const classes = useStyles();
+    const dispatch = useDispatch();
 
     return (
         <div>
             <div className={classes.container}>
-                <h3 className={classes.title}>{item.title} <DeleteOutlineIcon style={{ float: "right" }} /> </h3>
+                <h3
+                    className={classes.title}>{item.title}
+                    <span onClick={() => dispatch(CartReducerActions.removeItem(item.id))}>
+                        <DeleteOutlineIcon style={{ float: "right", cursor: "pointer" }} />
+                    </span>
+                </h3>
                 <div className={classes.infoContainer}>
                     <div className={classes.information}>
                         <p>Price: ${item.price}</p>
@@ -61,7 +69,7 @@ const CartItem: FC<Props> = ({ item }) => {
                             size='small'
                             disableElevation
                             variant='contained'
-                            onClick={() => console.log(item.id)}
+                            onClick={() => dispatch(CartReducerActions.substractOneUnit(item.id))}
                         >
                             -
                         </Button>
@@ -70,7 +78,7 @@ const CartItem: FC<Props> = ({ item }) => {
                             size='small'
                             disableElevation
                             variant='contained'
-                            onClick={() => console.log(item)}
+                            onClick={() => dispatch(CartReducerActions.addOneUnit(item.id))}
                         >
                             +
                         </Button>

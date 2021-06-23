@@ -1,59 +1,73 @@
-import React, {FC} from 'react';
-import { useDispatch } from 'react-redux';
-import { makeStyles } from '@material-ui/core';
-import { Card, CardActionArea, CardActions, CardContent, CardMedia, Button, Typography, Grid } from '@material-ui/core';
+import { FC, useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Card, CardActionArea, CardActions, CardContent, CardMedia, Button, Typography, Grid, makeStyles } from '@material-ui/core';
 import { CART_REDUCER_TYPES } from '../../reducers/cart-reducer';
 import ICartItem from '../../commons/interfaces/ICartItem';
+import IStore from '../../commons/interfaces/IStore';
 
 const useStyles = makeStyles({
-    root: {
-      maxWidth: 284,
-      margin: '20px'
-    },
-  });
+  root: {
+    maxWidth: 284,
+    margin: '20px'
+  },
+});
 
 const ProductCard: FC<any> = ({ product }) => {
-    const classes = useStyles();
-    const dispatch = useDispatch();
+  const classes = useStyles();
+  const dispatch = useDispatch();
+  const cartList = useSelector((state: IStore) => state.cart.list);
+  const cartTotal = useSelector((state: IStore) => state.cart.total);
+  const [isItemInCart, setIsItemInCart] = useState(false);
 
-    const addToCart = () => {
-      const cartItem: ICartItem = {...product, quantity: 1};
-      dispatch({type: CART_REDUCER_TYPES.ADD_PRODUCT, payload: cartItem})
+  const addToCart = () => {
+    if (!isItemInCart) {
+      const cartItem: ICartItem = { ...product, quantity: 1 };
+      dispatch({ type: CART_REDUCER_TYPES.ADD_PRODUCT, payload: cartItem })
+      setIsItemInCart(true);
     }
+  }
 
-    return (
-      <>
-        <Grid item xs={12} sm={6} lg={3}>
-          <Card className={classes.root}>
-              <CardActionArea>
-                <CardMedia
-                  component="img"
-                  alt={product.title}
-                  height="284"
-                  image={product.image}
-                  title={product.title}
-                />
-                <CardContent>
-                  <Typography noWrap component="h2">
-                  {product.title}
-                  </Typography>
-                  <Typography variant="h5" component="h2">
-                    $ {product.price}
-                  </Typography>
-                  <Typography variant="body2" color="textSecondary"   component="p">
-                    
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-              <CardActions>
-                <Button onClick={addToCart} size="small" color="primary">
-                  AGREGAR AL CARRITO
-                </Button>
-              </CardActions>
-          </Card>
-        </Grid>
-      </>
-    )
+  useEffect(() => {
+    const itemInCart = cartList.filter(item => item.id === product.id);
+    if (!itemInCart.length) {
+      setIsItemInCart(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cartTotal])
+
+  return (
+    <>
+      <Grid item xs={12} sm={6} lg={3}>
+        <Card className={classes.root}>
+          <CardActionArea>
+            <CardMedia
+              component="img"
+              alt={product.title}
+              height="284"
+              image={product.image}
+              title={product.title}
+            />
+            <CardContent>
+              <Typography noWrap component="h2">
+                {product.title}
+              </Typography>
+              <Typography variant="h5" component="h2">
+                $ {product.price}
+              </Typography>
+              <Typography variant="body2" color="textSecondary" component="p">
+
+              </Typography>
+            </CardContent>
+          </CardActionArea>
+          <CardActions>
+            <Button onClick={addToCart} size="small" color="primary">
+              ADD TO CART
+            </Button>
+          </CardActions>
+        </Card>
+      </Grid>
+    </>
+  )
 }
 
 export default ProductCard;
