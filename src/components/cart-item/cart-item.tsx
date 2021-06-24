@@ -18,16 +18,24 @@ const useStyles = makeStyles((theme) => ({
     },
     infoContainer: {
         float: "left",
-        width: "320px"
+        width: "75%"
     },
     information: {
         display: "flex",
         justifyContent: "space-between",
         marginBottom: "2px"
     },
+    buttons: {
+        display: "flex",
+        justifyContent: "space-between",
+        marginBottom: "2px",
+        paddingBottom: "20px",
+        paddingRight: "30px",
+        paddingLeft: "30px"
+    },
     imgContainer: {
         float: "left",
-        width: "130px",
+        width: "20%",
         height: "100px",
     },
     img: {
@@ -64,7 +72,7 @@ const CartItem: FC<Props> = ({ item }) => {
                         <p>Price: ${item.price}</p>
                         <p>Total: ${(item.quantity * item.price).toFixed(2)}</p>
                     </div>
-                    <div style={{ paddingBottom: "20px" }} className={classes.information}>
+                    <div className={classes.buttons}>
                         <Button
                             size='small'
                             disableElevation
@@ -84,7 +92,6 @@ const CartItem: FC<Props> = ({ item }) => {
                         </Button>
                     </div>
                 </div>
-
                 <div className={classes.imgContainer}>
                     <img className={classes.img} src={item.image} alt={item.title} />
                 </div>

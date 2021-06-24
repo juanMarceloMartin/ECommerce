@@ -1,5 +1,9 @@
 @import '~antd/dist/antd.css';
 
+* {
+  box-sizing: border-box;
+}
+
 
 .code-box-demo {
   text-align: center;
