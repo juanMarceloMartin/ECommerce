@@ -2,23 +2,23 @@ import './App.css';
 import { Layout } from 'antd';
 import Navbar from './components/navbar/navbar';
 import CardsContainer from './components/cards-container/cards-container';
-import React from 'react';
+import { PageLoader } from './components/page-loader/page-loader';
 
 function App() {
-  
-  const { Footer, Sider } = Layout;
+
+  const { Footer } = Layout;
 
   return (
-  <>
-    <Layout>
-      <Navbar />
-      <Layout className="layout-body">
-        <Sider>Sider</Sider>
-        <CardsContainer />
+    <>
+      <Layout>
+        <PageLoader />
+        <Navbar />
+        <Layout className="layout-body">
+          <CardsContainer />
+        </Layout>
+        <Footer>Footer</Footer>
       </Layout>
-      <Footer>Footer</Footer>
-    </Layout>
-  </>
+    </>
   );
 }
 

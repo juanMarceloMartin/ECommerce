@@ -1,30 +1,36 @@
-import React, { FC, useEffect } from 'react';
+import { FC, useEffect } from 'react';
 import { ProductsReducerActions } from '../../reducers/products-reducer';
 import { useSelector, useDispatch } from 'react-redux';
 import IProduct from '../../commons/interfaces/IProduct';
 import IProductState from '../../commons/interfaces/IProductState';
 import { Layout } from 'antd';
 import ProductCard from '../product-card/product-card';
+import Sidebar from '../sidebar/sidebar';
 import { Grid } from '@material-ui/core';
 
 const CardsContainer: FC = () => {
     const { Content } = Layout;
     const dispatch = useDispatch();
-    const productsList = useSelector((state: IProductState) => state.productsState.list);
+    const productsList = useSelector((state: IProductState) => state.products.list);
+    const categories = useSelector((state: IProductState) => state.products.categories);
 
     useEffect(() => {
         dispatch(ProductsReducerActions.getList());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        dispatch(ProductsReducerActions.getCategories());
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (
-        <Content>
-            <Grid container>
-                {
-                    productsList?.map((product: IProduct) => <ProductCard key={product.id} product={product}/>)
-                }
-            </Grid>
-        </Content>
+        <>
+            <Sidebar title="Categories" items={categories} />
+            <Content>
+                <Grid container>
+                    {
+                        productsList?.map((product: IProduct) => <ProductCard key={product.id} product={product} />)
+                    }
+                </Grid>
+            </Content>
+        </>
     )
 }
 

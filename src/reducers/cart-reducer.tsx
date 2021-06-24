@@ -1,6 +1,7 @@
 import IReducerAction from '../commons/interfaces/IReducerAction';
 import ICartItem from '../commons/interfaces/ICartItem';
 import ICartState from '../commons/interfaces/ICartState';
+import { GlobalReducerActions } from './global-reducer';
 
 const CART_INITIAL_STATE = {
     list: new Array<ICartItem>(),
@@ -84,7 +85,9 @@ export const cartReducer = (state = CART_INITIAL_STATE, action: IReducerAction) 
 const addOneUnit = (id: number) => {
     return async (dispatch: any) => {
         try {
+            dispatch(GlobalReducerActions.showPageLoader());
             dispatch({ type: CART_REDUCER_TYPES.ADD_UNIT, payload: id })
+            dispatch(GlobalReducerActions.hidePageLoader());
         } catch (error) {
             console.log(error)
         }
@@ -94,7 +97,9 @@ const addOneUnit = (id: number) => {
 const substractOneUnit = (id: number) => {
     return async (dispatch: any) => {
         try {
-            dispatch({ type: CART_REDUCER_TYPES.SUBSTRACT_UNIT, payload: id })
+            dispatch(GlobalReducerActions.showPageLoader());
+            dispatch({ type: CART_REDUCER_TYPES.SUBSTRACT_UNIT, payload: id });
+            dispatch(GlobalReducerActions.hidePageLoader());
         } catch (error) {
             console.log(error)
         }
@@ -104,7 +109,9 @@ const substractOneUnit = (id: number) => {
 const removeItem = (id: number) => {
     return async (dispatch: any) => {
         try {
-            dispatch({ type: CART_REDUCER_TYPES.REMOVE_ITEM, payload: id })
+            dispatch(GlobalReducerActions.showPageLoader());
+            dispatch({ type: CART_REDUCER_TYPES.REMOVE_ITEM, payload: id });
+            dispatch(GlobalReducerActions.hidePageLoader());
         } catch (error) {
             console.log(error)
         }

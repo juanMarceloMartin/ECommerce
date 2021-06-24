@@ -11,6 +11,17 @@ async function getList() {
     }
 }
 
+async function getCategories() {
+    try {
+        const response = await axios.get(`${url}/categories`)
+        return response.data;
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+
 export const ProductsApi = {
-    getList
+    getList,
+    getCategories
 }

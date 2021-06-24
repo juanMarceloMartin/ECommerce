@@ -70,7 +70,6 @@ const ProductCard: FC<any> = ({ product }) => {
                 $ {product.price}
               </Typography>
               <Typography variant="body2" color="textSecondary" component="p">
-
               </Typography>
             </CardContent>
           </CardActionArea>

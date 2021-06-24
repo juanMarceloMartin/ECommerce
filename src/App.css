@@ -2,6 +2,7 @@
 
 * {
   box-sizing: border-box;
+  background-color: transparent;
 }
 
 
@@ -31,12 +32,9 @@
 }
 .ant-layout-sider {
   color: black;
-  line-height: 120px;
   background: #fff;
 }
-[data-theme="dark"] .ant-layout-sider {
-  background: #3499ec;
-}
+
 .ant-layout-content {
   min-height: 120px;
   color: #fff;
