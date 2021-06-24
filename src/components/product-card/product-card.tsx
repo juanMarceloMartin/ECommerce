@@ -17,6 +17,11 @@ const ProductCard: FC<any> = ({ product }) => {
   const dispatch = useDispatch();
   const cartList = useSelector((state: IStore) => state.cart.list);
   const cartTotal = useSelector((state: IStore) => state.cart.total);
+  const [buttonStyle, setButtonStyle] = useState({
+    background: "black"
+  });
+  const [buttonText, setButtonText] = useState("ADD TO CART")
+  const [disabledButton, setDisabledButton] = useState(false)
   const [isItemInCart, setIsItemInCart] = useState(false);
 
   const addToCart = () => {
@@ -24,6 +29,11 @@ const ProductCard: FC<any> = ({ product }) => {
       const cartItem: ICartItem = { ...product, quantity: 1 };
       dispatch({ type: CART_REDUCER_TYPES.ADD_PRODUCT, payload: cartItem })
       setIsItemInCart(true);
+      setButtonStyle({
+        background: "#00c853"
+      });
+      setButtonText("ADDED");
+      setDisabledButton(true)
     }
   }
 
@@ -31,6 +41,11 @@ const ProductCard: FC<any> = ({ product }) => {
     const itemInCart = cartList.filter(item => item.id === product.id);
     if (!itemInCart.length) {
       setIsItemInCart(false);
+      setButtonStyle({
+        background: "black"
+      });
+      setButtonText("ADD TO CART");
+      setDisabledButton(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cartTotal])
@@ -60,8 +75,8 @@ const ProductCard: FC<any> = ({ product }) => {
             </CardContent>
           </CardActionArea>
           <CardActions>
-            <Button onClick={addToCart} size="small" color="primary">
-              ADD TO CART
+            <Button disabled={disabledButton} onClick={addToCart} size="small" style={{ ...buttonStyle, width: "100%", color: "white", fontWeight: "bold" }}>
+              {buttonText}
             </Button>
           </CardActions>
         </Card>
