@@ -20,8 +20,18 @@ async function getCategories() {
     }
 }
 
+async function selectCategory(category: string) {
+    try {
+        const response = await axios.get(`${url}/category/${category}`)
+        return response.data;
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 
 export const ProductsApi = {
     getList,
-    getCategories
+    getCategories,
+    selectCategory
 }

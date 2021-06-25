@@ -15,7 +15,12 @@ const CardsContainer: FC = () => {
     const categories = useSelector((state: IProductState) => state.products.categories);
 
     useEffect(() => {
-        dispatch(ProductsReducerActions.getList());
+        const currentCategory = localStorage.getItem("selected_category");
+        if (!currentCategory || currentCategory === "all") {
+            dispatch(ProductsReducerActions.getList());
+        } else {
+            dispatch(ProductsReducerActions.getListByCategory(currentCategory));
+        }
         dispatch(ProductsReducerActions.getCategories());
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])

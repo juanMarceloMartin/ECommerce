@@ -4,12 +4,14 @@ import { GlobalReducerActions } from './global-reducer';
 
 const PRODUCTS_INITIAL_STATE = {
     list: [],
-    categories: []
+    categories: [],
+    selectedCategory: localStorage.getItem("selected_category")
 }
 
 export const PRODUCTS_REDUCER_TYPES = {
     SET_LIST: "SET_LIST",
-    SET_CATEGORIES: "SET_CATEGORIES"
+    SET_CATEGORIES: "SET_CATEGORIES",
+    SET_SELECTED_CATEGORY: "SET_SELECTED_CATEGORY"
 }
 
 export const productsReducer = (state = PRODUCTS_INITIAL_STATE, action: IReducerAction) => {
@@ -27,6 +29,12 @@ export const productsReducer = (state = PRODUCTS_INITIAL_STATE, action: IReducer
                 categories: payload
             }
 
+        case PRODUCTS_REDUCER_TYPES.SET_SELECTED_CATEGORY:
+            return {
+                ...state,
+                selectedCategory: payload
+            }
+
         default:
             return state;
     };
@@ -38,6 +46,8 @@ const getList = () => {
             dispatch(GlobalReducerActions.showPageLoader());
             const response = await ProductsApi.getList();
             dispatch({ type: PRODUCTS_REDUCER_TYPES.SET_LIST, payload: response });
+            localStorage.setItem("selected_category", "all");
+            dispatch({ type: PRODUCTS_REDUCER_TYPES.SET_SELECTED_CATEGORY, payload: "all" })
             dispatch(GlobalReducerActions.hidePageLoader());
         } catch (error) {
             console.log(error)
@@ -50,8 +60,24 @@ const getCategories = () => {
         try {
             dispatch(GlobalReducerActions.showPageLoader());
             const response = await ProductsApi.getCategories();
+            response.push('all')
             dispatch({ type: PRODUCTS_REDUCER_TYPES.SET_CATEGORIES, payload: response })
+            dispatch(GlobalReducerActions.hidePageLoader());
+        } catch (error) {
+            console.log(error)
+        }
+    }
+}
+
+const getListByCategory = (category: string) => {
+    return async (dispatch: any) => {
+        try {
             dispatch(GlobalReducerActions.showPageLoader());
+            const response = await ProductsApi.selectCategory(category);
+            dispatch({ type: PRODUCTS_REDUCER_TYPES.SET_LIST, payload: response })
+            dispatch({ type: PRODUCTS_REDUCER_TYPES.SET_SELECTED_CATEGORY, payload: category })
+            localStorage.setItem("selected_category", category);
+            dispatch(GlobalReducerActions.hidePageLoader());
         } catch (error) {
             console.log(error)
         }
@@ -60,5 +86,6 @@ const getCategories = () => {
 
 export const ProductsReducerActions = {
     getList,
-    getCategories
+    getCategories,
+    getListByCategory
 }
