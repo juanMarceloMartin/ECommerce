@@ -45,8 +45,8 @@ const Cart: FC = () => {
           <div>
             <h1>Order Summary</h1>
             <p>Subtotal <span style={{ float: "right" }}>$ {subtotal.toFixed(2)}</span></p>
-            <p>Estimated Shipping <span style={{ float: "right" }}>from $ 0.00</span> </p>
-            <h2><strong>Estimated Total <span style={{ float: "right" }}>$ {subtotal.toFixed(2)}</span></strong></h2>
+            <p>Estimated Shipping <span style={{ float: "right" }}>from $ 10.00</span> </p>
+            <h2><strong>Estimated Total <span style={{ float: "right" }}>$ {(subtotal + 10).toFixed(2)}</span></strong></h2>
           </div>
           <Button className={classes.checkOut} variant="contained" color="primary">
             CHECK OUT HERE
