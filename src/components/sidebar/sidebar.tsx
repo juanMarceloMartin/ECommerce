@@ -1,6 +1,5 @@
 import { FC } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Layout } from 'antd';
 import { makeStyles, Drawer } from '@material-ui/core';
 import IStore from '../../commons/interfaces/IStore';
 import { GlobalReducerActions } from '../../reducers/global-reducer';
@@ -14,7 +13,6 @@ interface IProps {
 
 const useStyles = makeStyles({
     sider: {
-        width: "200px",
         '@media(max-width: 800px)': {
             display: 'none',
             background: "red"
@@ -35,12 +33,11 @@ const useStyles = makeStyles({
         "&:hover": {
             borderLeft: "5px solid black"
         }
-    }
+    },
 })
 
 const Sidebar: FC<IProps> = ({ title, items }) => {
     const classes = useStyles();
-    const { Sider } = Layout;
     const isSidebarOpen = useSelector((state: IStore) => state.global.isSidebarOpen);
     const selectedCategory = useSelector((state: IProductState) => state.products.selectedCategory);
     const dispatch = useDispatch();
@@ -68,13 +65,13 @@ const Sidebar: FC<IProps> = ({ title, items }) => {
                 }
             </div>
         )
-    };
+    }
 
     return (
         <>
-            <Sider className={classes.sider}>
+            <div className={classes.sider}>
                 {renderContent()}
-            </Sider>
+            </div>
             <Drawer anchor='left' open={isSidebarOpen} onClose={() => dispatch(GlobalReducerActions.showResponsiveSidebar(false))}>
                 {renderContent()}
             </Drawer>

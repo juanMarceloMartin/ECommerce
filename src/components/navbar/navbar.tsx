@@ -1,14 +1,22 @@
 import { FC, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Layout } from 'antd';
 import { Drawer, Badge, makeStyles } from '@material-ui/core';
 import ShoppingCartRoundedIcon from '@material-ui/icons/ShoppingCartRounded';
-import MenuIcon from '@material-ui/icons/Menu';
 import IStore from '../../commons/interfaces/IStore';
 import Cart from '../cart/cart';
 import { GlobalReducerActions } from '../../reducers/global-reducer';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
+    root: {
+        flexGrow: 1,
+    },
+    menuButton: {
+        marginRight: theme.spacing(2),
+    },
     menuIcon: {
         float: "left",
         cursor: "pointer",
@@ -17,29 +25,36 @@ const useStyles = makeStyles({
             display: 'inline'
         }
     }
-})
+}));
 
 const Navbar: FC = () => {
-    const { Header } = Layout;
     const cartContent = useSelector((state: IStore) => state.cart.list.length)
     const [cartOpen, setCartOpen] = useState(false);
     const dispatch = useDispatch();
     const classes = useStyles();
 
     return (
-        <Header style={{ paddingLeft: "15px" }}>
-            <div className={classes.menuIcon} onClick={() => dispatch(GlobalReducerActions.showResponsiveSidebar(true))}>
-                <MenuIcon />
-            </div>
-            <div onClick={() => setCartOpen(true)} style={{ float: 'right' }}>
-                <Badge color="error" badgeContent={cartContent}>
-                    <ShoppingCartRoundedIcon />
-                </Badge>
-            </div>
-            <Drawer anchor='right' open={cartOpen} onClose={() => setCartOpen(false)}>
-                <Cart></Cart>
-            </Drawer>
-        </Header>
+        <div className={classes.root}>
+            <AppBar position="fixed">
+                <Toolbar>
+                    <div className={classes.menuIcon} onClick={() => dispatch(GlobalReducerActions.showResponsiveSidebar(true))}>
+                        <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+                            <MenuIcon />
+                        </IconButton>
+                    </div>
+                    <div style={{ marginLeft: "auto" }}>
+                        <IconButton color="inherit" edge="end" onClick={() => setCartOpen(true)} >
+                            <Badge color="error" badgeContent={cartContent}>
+                                <ShoppingCartRoundedIcon />
+                            </Badge>
+                        </IconButton>
+                    </div>
+                    <Drawer anchor='right' open={cartOpen} onClose={() => setCartOpen(false)}>
+                        <Cart></Cart>
+                    </Drawer>
+                </Toolbar>
+            </AppBar>
+        </div>
     )
 }
 

@@ -1,23 +1,21 @@
 import './App.css';
-import { Layout } from 'antd';
 import Navbar from './components/navbar/navbar';
 import CardsContainer from './components/cards-container/cards-container';
 import { PageLoader } from './components/page-loader/page-loader';
+import Footer from './components/footer/footer';
 
 function App() {
 
-  const { Footer } = Layout;
-
   return (
     <>
-      <Layout>
-        <PageLoader />
-        <Navbar />
-        <Layout className="layout-body">
-          <CardsContainer />
-        </Layout>
-        <Footer>Footer</Footer>
-      </Layout>
+      <Navbar />
+
+      <PageLoader />
+      <div style={{ paddingTop: "80px", background: "white" }}>
+        <CardsContainer />
+      </div>
+      <Footer />
+
     </>
   );
 }
