@@ -11,7 +11,7 @@ function App() {
       <Navbar />
 
       <PageLoader />
-      <div style={{ paddingTop: "80px", background: "white" }}>
+      <div style={{ paddingTop: "80px", background: "white", minHeight: "100vh"}}>
         <CardsContainer />
       </div>
       <Footer />
