@@ -8,18 +8,24 @@ import { store } from './store';
 import { ThemeProvider, createMuiTheme } from '@material-ui/core';
 
 const theme = createMuiTheme({
-    palette: {
-      primary: {
-        main: '#212121',
-      },
-      secondary: {
-        main: '#e57373',
+  palette: {
+    primary: {
+      main: '#212121',
+    },
+    secondary: {
+      main: '#e57373',
     },
     success: {
-        main: "#b9f6ca"
-      }
-    },
-  })
+      main: "#b9f6ca"
+    }
+  },
+  typography: {
+    fontFamily: [
+      'Montserrat',
+      'sans-serif',
+    ].join(','),
+  },
+})
 
 ReactDOM.render(
   <Provider store={store}>

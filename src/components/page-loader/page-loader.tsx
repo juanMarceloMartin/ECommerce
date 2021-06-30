@@ -1,3 +1,4 @@
+import { FC } from 'react';
 import { makeStyles, Backdrop, CircularProgress } from "@material-ui/core";
 import { useSelector } from "react-redux";
 import IStore from "../../commons/interfaces/IStore";
@@ -9,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export const PageLoader = () => {
+const PageLoader: FC = () => {
     const classes = useStyles();
     const isPageLoading = useSelector((state: IStore) => state.global.isPageLoading);
     return (
@@ -18,3 +19,5 @@ export const PageLoader = () => {
         </Backdrop>
     );
 };
+
+export default PageLoader;

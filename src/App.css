@@ -1,49 +1,5 @@
-@import '~antd/dist/antd.css';
-
 * {
   box-sizing: border-box;
   background-color: transparent;
-}
-
-
-.code-box-demo {
-  text-align: center;
-}
-
-
-.layout-body {
-  height: auto;
-  min-height: 100vh;
-}
-
-.ant-layout-header,
-.ant-layout-footer {
-  color: #fff;
-  background: #212121;
-}
-[data-theme="dark"] .ant-layout-header {
-  background: #6aa0c7;
-}
-[data-theme="dark"] .ant-layout-footer {
-  background: #6aa0c7;
-}
-.ant-layout-footer {
-  line-height: 1.5;
-}
-.ant-layout-sider {
-  color: black;
-  background: #fff;
-}
-
-.ant-layout-content {
-  min-height: 120px;
-  color: #fff;
-  line-height: 120px;
-  background: #fff;
-}
-[data-theme="dark"] .ant-layout-content {
-  background: #107bcb;
-}
-.code-box-demo > .ant-layout + .ant-layout {
-  margin-top: 48px;
+  font-family: 'Montserrat', sans-serif;
 }
