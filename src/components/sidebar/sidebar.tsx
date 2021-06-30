@@ -4,7 +4,6 @@ import { makeStyles, Drawer } from '@material-ui/core';
 import IStore from '../../commons/interfaces/IStore';
 import { GlobalReducerActions } from '../../reducers/global-reducer';
 import { ProductsReducerActions } from '../../reducers/products-reducer';
-import IProductState from '../../commons/interfaces/IProductState';
 
 interface IProps {
     title: string
@@ -31,7 +30,8 @@ const useStyles = makeStyles({
         lineHeight: "50px",
         cursor: "pointer",
         "&:hover": {
-            borderLeft: "5px solid black"
+            borderLeft: "5px solid black",
+            transition: "border-width 0.2s linear"
         }
     },
 })
@@ -39,7 +39,7 @@ const useStyles = makeStyles({
 const Sidebar: FC<IProps> = ({ title, items }) => {
     const classes = useStyles();
     const isSidebarOpen = useSelector((state: IStore) => state.global.isSidebarOpen);
-    const selectedCategory = useSelector((state: IProductState) => state.products.selectedCategory);
+    const selectedCategory = useSelector((state: IStore) => state.products.selectedCategory);
     const dispatch = useDispatch();
 
     function handleSelectCategory(category: string) {
@@ -61,7 +61,7 @@ const Sidebar: FC<IProps> = ({ title, items }) => {
             <div className={classes.container}>
                 <h1 className={classes.title}>{title}</h1>
                 {items &&
-                    items.map((item: any) => <div key={item} style={setBorderStyle(item)} onClick={() => handleSelectCategory(item)} className={classes.item}>{item}</div>)
+                    items.map((item: any) => <div key={item.name} style={setBorderStyle(item.name)} onClick={() => handleSelectCategory(item.name)} className={classes.item}>{item.name}</div>)
                 }
             </div>
         )

@@ -2,15 +2,15 @@ import { FC, useEffect } from 'react';
 import { ProductsReducerActions } from '../../reducers/products-reducer';
 import { useSelector, useDispatch } from 'react-redux';
 import IProduct from '../../commons/interfaces/IProduct';
-import IProductState from '../../commons/interfaces/IProductState';
 import ProductCard from '../product-card/product-card';
 import Sidebar from '../sidebar/sidebar';
 import { Grid } from '@material-ui/core';
+import IStore from '../../commons/interfaces/IStore';
 
 const CardsContainer: FC = () => {
     const dispatch = useDispatch();
-    const productsList = useSelector((state: IProductState) => state.products.list);
-    const categories = useSelector((state: IProductState) => state.products.categories);
+    const productsList = useSelector((state: IStore) => state.products.list);
+    const categories = useSelector((state: IStore) => state.products.categories);
 
     useEffect(() => {
         const currentCategory = localStorage.getItem("selected_category");

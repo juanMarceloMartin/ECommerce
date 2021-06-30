@@ -4,7 +4,7 @@ import { GlobalReducerActions } from './global-reducer';
 
 const PRODUCTS_INITIAL_STATE = {
     list: [],
-    categories: [],
+    categories: [{}],
     selectedCategory: localStorage.getItem("selected_category")
 }
 
@@ -59,8 +59,8 @@ const getCategories = () => {
     return async (dispatch: any) => {
         try {
             dispatch(GlobalReducerActions.showPageLoader());
-            const response = await ProductsApi.getCategories();
-            response.push('all')
+            const response: any = await ProductsApi.getCategories();
+            response.push({ name: "all" })
             dispatch({ type: PRODUCTS_REDUCER_TYPES.SET_CATEGORIES, payload: response })
             dispatch(GlobalReducerActions.hidePageLoader());
         } catch (error) {
