@@ -36,14 +36,15 @@ const useStyles = makeStyles((theme) => ({
     imgContainer: {
         float: "left",
         width: "20%",
-        height: "100px",
+        height: "140px",
     },
     img: {
         maxWidth: "60px",
-        maxHeight: "85px",
+        maxHeight: "95px",
         objectFit: "cover",
         marginLeft: "40px",
-        marginTop: "5px",
+        marginTop: "10px",
+        paddingTop: "10px",
         verticalAlign: "middle"
     },
     button: {

@@ -55,6 +55,21 @@ const getList = () => {
     }
 }
 
+const getLisOfNewItems = () => {
+    return async (dispatch: any) => {
+        try {
+            dispatch(GlobalReducerActions.showPageLoader());
+            const response = await ProductsApi.getLisOfNewItems();
+            dispatch({ type: PRODUCTS_REDUCER_TYPES.SET_LIST, payload: response });
+            localStorage.setItem("selected_category", "all");
+            dispatch({ type: PRODUCTS_REDUCER_TYPES.SET_SELECTED_CATEGORY, payload: "all" })
+            dispatch(GlobalReducerActions.hidePageLoader());
+        } catch (error) {
+            console.log(error)
+        }
+    }
+}
+
 const getCategories = () => {
     return async (dispatch: any) => {
         try {
@@ -87,5 +102,6 @@ const getListByCategory = (category: string) => {
 export const ProductsReducerActions = {
     getList,
     getCategories,
-    getListByCategory
+    getListByCategory,
+    getLisOfNewItems
 }

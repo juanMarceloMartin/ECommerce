@@ -10,17 +10,17 @@ function App() {
 
   return (
     <>
-      <Navbar />
-      <PageLoader />
-      <div style={{ paddingTop: "64px", background: "white", minHeight: "100vh" }}>
-        <Router>
+      <Router>
+        <Navbar />
+        <PageLoader />
+        <div style={{ paddingTop: "64px", background: "white", minHeight: "100vh" }}>
           <Switch>
             <Route exact path="/" component={Landing}></Route>
             <Route exact path="/products" component={ProductsScreen}></Route>
           </Switch>
-        </Router>
-      </div>
-      <Footer />
+        </div>
+        <Footer />
+      </Router>
 
     </>
   );

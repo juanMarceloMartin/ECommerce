@@ -7,6 +7,8 @@ import IStore from '../../commons/interfaces/IStore';
 import { ProductsReducerActions } from '../../reducers/products-reducer';
 import { makeStyles, Button } from '@material-ui/core';
 import ProductsWrapper from '../products-wrapper/products-wrapper';
+import { Link } from "react-router-dom";
+
 
 const useStyles = makeStyles((theme) => ({
     image: {
@@ -60,7 +62,7 @@ const Landing: FC = () => {
 
     useEffect(() => {
         dispatch(ProductsReducerActions.getCategories());
-        dispatch(ProductsReducerActions.getList());
+        dispatch(ProductsReducerActions.getLisOfNewItems());
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -70,9 +72,11 @@ const Landing: FC = () => {
                 {categories?.map((category: any) => {
                     if (category.name !== "all") {
                         return (
-                            <div>
+                            <div key={category.name}>
                                 <img className={classes.image} src={category.image} alt="" />
-                                <div className={classes.category}> {category.name}</div>
+                                <Link to="/products">
+                                    <div onClick={() => dispatch(ProductsReducerActions.getListByCategory(category.name))} className={classes.category}> {category.name}</div>
+                                </Link>
                             </div>
                         )
                     }
@@ -82,9 +86,11 @@ const Landing: FC = () => {
             <ProductsWrapper productsList={newProductsList} />
             <div className={classes.banner}>10% OFF SHIPPING</div>
             <div className={classes.buttonContainer}>
-                <Button size="large" variant="contained" color="primary">
-                    SEE ALL PRODUCTS
-                </Button>
+                <Link to="/products">
+                    <Button size="large" variant="contained" color="primary">
+                        SEE ALL PRODUCTS
+                    </Button>
+                </Link>
             </div>
         </div>
     )

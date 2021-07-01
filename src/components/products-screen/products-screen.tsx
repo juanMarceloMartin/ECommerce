@@ -10,15 +10,18 @@ const ProductsScreen: FC = () => {
     const dispatch = useDispatch();
     const productsList = useSelector((state: IStore) => state.products.list);
     const categories = useSelector((state: IStore) => state.products.categories);
+    const currentCategory = useSelector((state: IStore) => state.products.selectedCategory);
 
     useEffect(() => {
-        const currentCategory = localStorage.getItem("selected_category");
-        if (!currentCategory || currentCategory === "all") {
+        if (currentCategory === "all") {
             dispatch(ProductsReducerActions.getList());
         } else {
-            dispatch(ProductsReducerActions.getListByCategory(currentCategory));
+            if (currentCategory) {
+                dispatch(ProductsReducerActions.getListByCategory(currentCategory))
+            };
         }
         dispatch(ProductsReducerActions.getCategories());
+        window.scrollTo(0, 0);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
