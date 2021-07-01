@@ -5,6 +5,10 @@ const url = 'https://fakestoreapi.com/products';
 async function getList() {
     try {
         const response = await axios.get(url)
+        response.data.forEach((item: any )=> {
+            const isItemNew = Math.random() > 0.70;
+            item.new = isItemNew;
+        })
         return response.data;
     } catch (error) {
         console.log(error)

@@ -5,7 +5,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import IStore from '../../commons/interfaces/IStore';
 import { ProductsReducerActions } from '../../reducers/products-reducer';
-import { makeStyles } from '@material-ui/core';
+import { makeStyles, Button } from '@material-ui/core';
 import ProductsWrapper from '../products-wrapper/products-wrapper';
 
 const useStyles = makeStyles((theme) => ({
@@ -23,6 +23,20 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: "10px",
         position: "relative",
         bottom: "35px"
+    },
+    banner: {
+        background: "#ccc",
+
+        color: "white",
+        fontSize: "20px",
+        textAlign: "center",
+        padding: "25px",
+        marginTop: "50px",
+        fontWeight: 900
+    },
+    buttonContainer: {
+        textAlign: "center",
+        margin: "30px 0"
     }
 }));
 
@@ -30,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
 const Landing: FC = () => {
     const dispatch = useDispatch();
     const categories = useSelector((state: IStore) => state.products.categories);
-    const productsList = useSelector((state: IStore) => state.products.list);
+    const newProductsList = useSelector((state: IStore) => state.products.list).filter((product: any) => product.new);
     const classes = useStyles();
 
     const settings = {
@@ -65,7 +79,13 @@ const Landing: FC = () => {
                 })}
             </Slider>
             <h2>New Arrivals</h2>
-            <ProductsWrapper productsList={productsList} />
+            <ProductsWrapper productsList={newProductsList} />
+            <div className={classes.banner}>10% OFF SHIPPING</div>
+            <div className={classes.buttonContainer}>
+                <Button size="large" variant="contained" color="primary">
+                    SEE ALL PRODUCTS
+                </Button>
+            </div>
         </div>
     )
 }
