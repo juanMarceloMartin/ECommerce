@@ -6,6 +6,7 @@ import "slick-carousel/slick/slick-theme.css";
 import IStore from '../../commons/interfaces/IStore';
 import { ProductsReducerActions } from '../../reducers/products-reducer';
 import { makeStyles } from '@material-ui/core';
+import ProductsWrapper from '../products-wrapper/products-wrapper';
 
 const useStyles = makeStyles((theme) => ({
     image: {
@@ -29,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
 const Landing: FC = () => {
     const dispatch = useDispatch();
     const categories = useSelector((state: IStore) => state.products.categories);
+    const productsList = useSelector((state: IStore) => state.products.list);
     const classes = useStyles();
 
     const settings = {
@@ -44,6 +46,7 @@ const Landing: FC = () => {
 
     useEffect(() => {
         dispatch(ProductsReducerActions.getCategories());
+        dispatch(ProductsReducerActions.getList());
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -61,6 +64,8 @@ const Landing: FC = () => {
                     }
                 })}
             </Slider>
+            <h2>New Arrivals</h2>
+            <ProductsWrapper productsList={productsList} />
         </div>
     )
 }
