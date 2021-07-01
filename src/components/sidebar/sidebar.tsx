@@ -12,9 +12,8 @@ interface IProps {
 
 const useStyles = makeStyles({
     sider: {
-        '@media(max-width: 800px)': {
-            display: 'none',
-            background: "red"
+        '@media(max-width: 960px)': {
+            display: 'none'
         }
     },
     container: {

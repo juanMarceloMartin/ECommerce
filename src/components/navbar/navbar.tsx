@@ -9,6 +9,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -24,6 +25,9 @@ const useStyles = makeStyles((theme) => ({
         '@media(max-width: 800px)': {
             display: 'inline'
         }
+    },
+    navTitle: {
+        color: "white",
     }
 }));
 
@@ -37,11 +41,16 @@ const Navbar: FC = () => {
         <div className={classes.root}>
             <AppBar position="fixed">
                 <Toolbar>
-                    <div className={classes.menuIcon} onClick={() => dispatch(GlobalReducerActions.showResponsiveSidebar(true))}>
-                        <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-                            <MenuIcon />
-                        </IconButton>
-                    </div>
+                    {window.location.pathname !== "/" &&
+                        <div className={classes.menuIcon} onClick={() => dispatch(GlobalReducerActions.showResponsiveSidebar(true))}>
+                            <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+                                <MenuIcon />
+                            </IconButton>
+                        </div>
+                    }
+                    <Link to="/" style={{ textDecoration: "none" }}>
+                        <h1 className={classes.navTitle}>FAK-E-COMMERCE</h1>
+                    </Link>
                     <div style={{ marginLeft: "auto" }}>
                         <IconButton color="inherit" edge="end" onClick={() => setCartOpen(true)} >
                             <Badge color="error" badgeContent={cartContent}>
