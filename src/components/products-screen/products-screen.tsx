@@ -11,6 +11,7 @@ const ProductsScreen: FC = () => {
     const productsList = useSelector((state: IStore) => state.products.list);
     const categories = useSelector((state: IStore) => state.products.categories);
     const currentCategory = useSelector((state: IStore) => state.products.selectedCategory);
+    const isPageLoading = useSelector((state: IStore) => state.global.isPageLoading);
 
     useEffect(() => {
         if (currentCategory === "all") {
@@ -18,7 +19,7 @@ const ProductsScreen: FC = () => {
         } else {
             if (currentCategory) {
                 dispatch(ProductsReducerActions.getListByCategory(currentCategory))
-            };
+            }
         }
         dispatch(ProductsReducerActions.getCategories());
         window.scrollTo(0, 0);
@@ -30,9 +31,11 @@ const ProductsScreen: FC = () => {
             <Grid item sm={2}>
                 <Sidebar title="Categories" items={categories} />
             </Grid>
-            <Grid item xs={12} sm={12} md={10}>
-                <ProductsWrapper productsList={productsList} />
-            </Grid>
+            {!isPageLoading &&
+                <Grid item xs={12} sm={12} md={10}>
+                    <ProductsWrapper productsList={productsList} />
+                </Grid>
+            }
         </Grid>
     )
 }

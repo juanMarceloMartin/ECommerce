@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { makeStyles, Drawer } from '@material-ui/core';
 import IStore from '../../commons/interfaces/IStore';
 import { GlobalReducerActions } from '../../reducers/global-reducer';
-import { ProductsReducerActions } from '../../reducers/products-reducer';
+import { ProductsReducerActions, PRODUCTS_REDUCER_TYPES } from '../../reducers/products-reducer';
 
 interface IProps {
     title: string
@@ -44,6 +44,7 @@ const Sidebar: FC<IProps> = ({ title, items }) => {
     function handleSelectCategory(category: string) {
         if (category === "all") {
             dispatch(ProductsReducerActions.getList());
+            dispatch({ type: PRODUCTS_REDUCER_TYPES.SET_SELECTED_CATEGORY, payload: "all" })
         } else {
             dispatch(ProductsReducerActions.getListByCategory(category));
         }

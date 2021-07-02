@@ -46,8 +46,8 @@ const getList = () => {
             dispatch(GlobalReducerActions.showPageLoader());
             const response = await ProductsApi.getList();
             dispatch({ type: PRODUCTS_REDUCER_TYPES.SET_LIST, payload: response });
-            localStorage.setItem("selected_category", "all");
-            dispatch({ type: PRODUCTS_REDUCER_TYPES.SET_SELECTED_CATEGORY, payload: "all" })
+            // localStorage.setItem("selected_category", "all");
+            // dispatch({ type: PRODUCTS_REDUCER_TYPES.SET_SELECTED_CATEGORY, payload: "all" })
             dispatch(GlobalReducerActions.hidePageLoader());
         } catch (error) {
             console.log(error)
@@ -61,8 +61,8 @@ const getLisOfNewItems = () => {
             dispatch(GlobalReducerActions.showPageLoader());
             const response = await ProductsApi.getLisOfNewItems();
             dispatch({ type: PRODUCTS_REDUCER_TYPES.SET_LIST, payload: response });
-            localStorage.setItem("selected_category", "all");
-            dispatch({ type: PRODUCTS_REDUCER_TYPES.SET_SELECTED_CATEGORY, payload: "all" })
+            // localStorage.setItem("selected_category", "all");
+            // dispatch({ type: PRODUCTS_REDUCER_TYPES.SET_SELECTED_CATEGORY, payload: "all" })
             dispatch(GlobalReducerActions.hidePageLoader());
         } catch (error) {
             console.log(error)

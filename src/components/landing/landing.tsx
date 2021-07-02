@@ -4,7 +4,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import IStore from '../../commons/interfaces/IStore';
-import { ProductsReducerActions } from '../../reducers/products-reducer';
+import { ProductsReducerActions, PRODUCTS_REDUCER_TYPES } from '../../reducers/products-reducer';
 import { makeStyles, Button } from '@material-ui/core';
 import ProductsWrapper from '../products-wrapper/products-wrapper';
 import { Link } from "react-router-dom";
@@ -60,9 +60,18 @@ const Landing: FC = () => {
         accessibility: true
     };
 
+    function handleSelectCategory(category: string) {
+        if (category === "all") {
+            dispatch({ type: PRODUCTS_REDUCER_TYPES.SET_SELECTED_CATEGORY, payload: "all" })
+        } else {
+            dispatch({ type: PRODUCTS_REDUCER_TYPES.SET_SELECTED_CATEGORY, payload: category })
+        }
+    }
+
     useEffect(() => {
         dispatch(ProductsReducerActions.getCategories());
         dispatch(ProductsReducerActions.getLisOfNewItems());
+        window.scrollTo(0, 0);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -75,7 +84,7 @@ const Landing: FC = () => {
                             <div key={category.name}>
                                 <img className={classes.image} src={category.image} alt="" />
                                 <Link to="/products">
-                                    <div onClick={() => dispatch(ProductsReducerActions.getListByCategory(category.name))} className={classes.category}> {category.name}</div>
+                                    <div onClick={() => handleSelectCategory(category.name)} className={classes.category}> {category.name}</div>
                                 </Link>
                             </div>
                         )
@@ -87,7 +96,7 @@ const Landing: FC = () => {
             <div className={classes.banner}>10% OFF SHIPPING</div>
             <div className={classes.buttonContainer}>
                 <Link to="/products">
-                    <Button size="large" variant="contained" color="primary">
+                    <Button onClick={() => handleSelectCategory("all")} size="large" variant="contained" color="primary">
                         SEE ALL PRODUCTS
                     </Button>
                 </Link>
