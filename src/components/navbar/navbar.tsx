@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
         float: "left",
         cursor: "pointer",
         display: "none",
-        '@media(max-width: 800px)': {
+        '@media(max-width: 960px)': {
             display: 'inline'
         }
     },
@@ -32,7 +32,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Navbar: FC = () => {
-    const cartContent = useSelector((state: IStore) => state.cart.list.length)
+    const cartContent = useSelector((state: IStore) => state.cart.list.length);
+    const displayMenuIcon = useSelector((state: IStore) => state.global.displayMenuIcon);
     const [cartOpen, setCartOpen] = useState(false);
     const dispatch = useDispatch();
     const classes = useStyles();
@@ -41,7 +42,7 @@ const Navbar: FC = () => {
         <div className={classes.root}>
             <AppBar position="fixed">
                 <Toolbar>
-                    {window.location.pathname !== "/" &&
+                    {displayMenuIcon &&
                         <div className={classes.menuIcon} onClick={() => dispatch(GlobalReducerActions.showResponsiveSidebar(true))}>
                             <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
                                 <MenuIcon />

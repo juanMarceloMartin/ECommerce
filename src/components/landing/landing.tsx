@@ -5,6 +5,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import IStore from '../../commons/interfaces/IStore';
 import { ProductsReducerActions, PRODUCTS_REDUCER_TYPES } from '../../reducers/products-reducer';
+import { GlobalReducerActions } from '../../reducers/global-reducer';
 import { makeStyles, Button } from '@material-ui/core';
 import ProductsWrapper from '../products-wrapper/products-wrapper';
 import { Link } from "react-router-dom";
@@ -69,9 +70,14 @@ const Landing: FC = () => {
     }
 
     useEffect(() => {
+        window.scrollTo(0, 0);
         dispatch(ProductsReducerActions.getCategories());
         dispatch(ProductsReducerActions.getLisOfNewItems());
-        window.scrollTo(0, 0);
+        dispatch(GlobalReducerActions.hideMenuIcon());
+
+        return () => {
+            dispatch(GlobalReducerActions.showMenuIcon());
+        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
