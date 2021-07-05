@@ -9,12 +9,12 @@ const useStyles = makeStyles({
   root: {
     maxWidth: 284,
     margin: '20px',
-    '@media(max-width: 600px)': {
-      marginLeft: "25%"
-    },
-    '@media(max-width: 500px)': {
-      marginLeft: "15%"
-  }
+      '@media(max-width: 600px)': {
+        marginLeft: "25%"
+      },
+      '@media(max-width: 500px)': {
+        marginLeft: "15%"
+    }
   },
 });
 

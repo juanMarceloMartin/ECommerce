@@ -91,7 +91,7 @@ const Landing: FC = () => {
                     }
                 })}
             </Slider>
-            <h2>New Arrivals</h2>
+            <h2 style={{paddingLeft: "24px"}}>New Arrivals</h2>
             <ProductsWrapper productsList={newProductsList} />
             <div className={classes.banner}>10% OFF SHIPPING</div>
             <div className={classes.buttonContainer}>

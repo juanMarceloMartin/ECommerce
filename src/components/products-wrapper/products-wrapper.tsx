@@ -10,7 +10,13 @@ interface IProps {
 const ProductsWrapper: FC<IProps> = (props) => {
     const { productsList } = props;
     return (
-        <Grid container>
+        <Grid
+            container
+            spacing={0}
+            alignItems="center"
+            justify="center"
+            style={{ paddingLeft: '5%' }}
+        >
             {
                 productsList?.map((product: IProduct) => <ProductCard key={product.id} product={product} />)
             }
