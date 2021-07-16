@@ -15,7 +15,7 @@ const ProductsWrapper: FC<IProps> = (props) => {
             spacing={0}
             alignItems="center"
             justify="center"
-            style={{ paddingLeft: '5%' }}
+            style={{ paddingTop: "30px", paddingLeft: '5%' }}
         >
             {
                 productsList?.map((product: IProduct) => <ProductCard key={product.id} product={product} />)

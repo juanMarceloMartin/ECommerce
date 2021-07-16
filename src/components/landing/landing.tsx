@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
 const Landing: FC = () => {
     const dispatch = useDispatch();
     const categories = useSelector((state: IStore) => state.products.categories);
-    const newProductsList = useSelector((state: IStore) => state.products.list).filter((product: any) => product.new);
+    const newProductsList = useSelector((state: IStore) => state.products.list)?.filter((product: any) => product.new);
     const classes = useStyles();
 
     const settings = {
@@ -85,19 +85,20 @@ const Landing: FC = () => {
         <div>
             <Slider {...settings}>
                 {categories?.map((category: any) => {
+                    let response = null;
                     if (category.name !== "all") {
-                        return (
+                        response =
                             <div key={category.name}>
                                 <img className={classes.image} src={category.image} alt="" />
                                 <Link to="/products">
                                     <div onClick={() => handleSelectCategory(category.name)} className={classes.category}> {category.name}</div>
                                 </Link>
                             </div>
-                        )
-                    }
+                    };
+                    return response;
                 })}
             </Slider>
-            <h2 style={{paddingLeft: "24px"}}>New Arrivals</h2>
+            <h2 style={{ paddingLeft: "24px" }}>New Arrivals</h2>
             <ProductsWrapper productsList={newProductsList} />
             <div className={classes.banner}>10% OFF SHIPPING</div>
             <div className={classes.buttonContainer}>

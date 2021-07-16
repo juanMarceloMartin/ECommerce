@@ -1,19 +1,19 @@
-import { FC, useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Card, CardActionArea, CardActions, CardContent, CardMedia, Button, Typography, Grid, makeStyles } from '@material-ui/core';
-import { CART_REDUCER_TYPES } from '../../reducers/cart-reducer';
-import ICartItem from '../../commons/interfaces/ICartItem';
-import IStore from '../../commons/interfaces/IStore';
+import { FC } from 'react';
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router';
+import { Card, CardActionArea, CardActions, CardContent, CardMedia, Typography, Grid, makeStyles } from '@material-ui/core';
+import { PRODUCTS_REDUCER_TYPES } from '../../reducers/products-reducer';
+import AddToCartButton from '../addToCartButton/add-to-cart-button';
 
 const useStyles = makeStyles({
   root: {
     maxWidth: 284,
     margin: '20px',
-      '@media(max-width: 600px)': {
-        marginLeft: "25%"
-      },
-      '@media(max-width: 500px)': {
-        marginLeft: "15%"
+    '@media(max-width: 600px)': {
+      marginLeft: "25%"
+    },
+    '@media(max-width: 500px)': {
+      marginLeft: "15%"
     }
   },
 });
@@ -21,68 +21,43 @@ const useStyles = makeStyles({
 const ProductCard: FC<any> = ({ product }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const cartList = useSelector((state: IStore) => state.cart.list);
-  const cartTotal = useSelector((state: IStore) => state.cart.total);
-  const [buttonStyle, setButtonStyle] = useState({
-    background: "black"
-  });
-  const [buttonText, setButtonText] = useState("ADD TO CART")
-  const [disabledButton, setDisabledButton] = useState(false)
-  const [isItemInCart, setIsItemInCart] = useState(false);
+  const history = useHistory();
 
-  const addToCart = () => {
-    if (!isItemInCart) {
-      const cartItem: ICartItem = { ...product, quantity: 1 };
-      dispatch({ type: CART_REDUCER_TYPES.ADD_PRODUCT, payload: cartItem })
-      setIsItemInCart(true);
-      setButtonStyle({
-        background: "#00c853"
-      });
-      setButtonText("ADDED");
-      setDisabledButton(true)
-    }
+  const handleSelectProduct = (id: number, category: string) => {
+    localStorage.setItem("selected_item_id", id.toString());
+    localStorage.setItem("selected_category", category)
+    dispatch({ type: PRODUCTS_REDUCER_TYPES.SET_SELECTED_PRODUCT_ID, payload: id })
+    history.push("/product");
+
   }
-
-  useEffect(() => {
-    const itemInCart = cartList.filter(item => item.id === product.id);
-    if (!itemInCart.length) {
-      setIsItemInCart(false);
-      setButtonStyle({
-        background: "black"
-      });
-      setButtonText("ADD TO CART");
-      setDisabledButton(false);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cartTotal])
 
   return (
     <>
       <Grid item xs={12} sm={6} lg={3}>
         <Card className={classes.root}>
-          <CardActionArea>
-            <CardMedia
-              component="img"
-              alt={product.title}
-              height="284"
-              image={product.image}
-              title={product.title}
-            />
-            <CardContent>
-              <Typography noWrap component="h2">
-                {product.title}
-              </Typography>
-              <Typography variant="h5" component="h2">
-                $ {product.price}
-              </Typography>
-              <Typography variant="body2" color="textSecondary" component="p">
-              </Typography>
-            </CardContent>
-          </CardActionArea>
+          <span onClick={() => handleSelectProduct(product.id, product.category)}>
+            <CardActionArea>
+              <CardMedia
+                component="img"
+                alt={product.title}
+                height="284"
+                image={product.image}
+                title={product.title}
+              />
+              <CardContent>
+                <Typography noWrap component="h2">
+                  {product.title}
+                </Typography>
+                <Typography variant="h5" component="h2">
+                  $ {product.price}
+                </Typography>
+                <Typography variant="body2" color="textSecondary" component="p">
+                </Typography>
+              </CardContent>
+            </CardActionArea>
+          </span>
           <CardActions>
-            <Button disabled={disabledButton} onClick={addToCart} size="small" style={{ ...buttonStyle, width: "100%", color: "white", fontWeight: "bold" }}>
-              {buttonText}
-            </Button>
+            <AddToCartButton product={product} />
           </CardActions>
         </Card>
       </Grid>

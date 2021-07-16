@@ -5,13 +5,15 @@ import { GlobalReducerActions } from './global-reducer';
 const PRODUCTS_INITIAL_STATE = {
     list: [],
     categories: [{}],
-    selectedCategory: localStorage.getItem("selected_category")
+    selectedCategory: localStorage.getItem("selected_category"),
+    selectedProductId: localStorage.getItem("selected_item_id"),
 }
 
 export const PRODUCTS_REDUCER_TYPES = {
     SET_LIST: "SET_LIST",
     SET_CATEGORIES: "SET_CATEGORIES",
-    SET_SELECTED_CATEGORY: "SET_SELECTED_CATEGORY"
+    SET_SELECTED_CATEGORY: "SET_SELECTED_CATEGORY",
+    SET_SELECTED_PRODUCT_ID: "SET_SELECTED_PRODUCT_ID"
 }
 
 export const productsReducer = (state = PRODUCTS_INITIAL_STATE, action: IReducerAction) => {
@@ -35,6 +37,12 @@ export const productsReducer = (state = PRODUCTS_INITIAL_STATE, action: IReducer
                 selectedCategory: payload
             }
 
+        case PRODUCTS_REDUCER_TYPES.SET_SELECTED_PRODUCT_ID:
+            return {
+                ...state,
+                selectedProductId: payload
+            }
+
         default:
             return state;
     };
@@ -46,8 +54,6 @@ const getList = () => {
             dispatch(GlobalReducerActions.showPageLoader());
             const response = await ProductsApi.getList();
             dispatch({ type: PRODUCTS_REDUCER_TYPES.SET_LIST, payload: response });
-            // localStorage.setItem("selected_category", "all");
-            // dispatch({ type: PRODUCTS_REDUCER_TYPES.SET_SELECTED_CATEGORY, payload: "all" })
             dispatch(GlobalReducerActions.hidePageLoader());
         } catch (error) {
             console.log(error)
@@ -61,8 +67,6 @@ const getLisOfNewItems = () => {
             dispatch(GlobalReducerActions.showPageLoader());
             const response = await ProductsApi.getLisOfNewItems();
             dispatch({ type: PRODUCTS_REDUCER_TYPES.SET_LIST, payload: response });
-            // localStorage.setItem("selected_category", "all");
-            // dispatch({ type: PRODUCTS_REDUCER_TYPES.SET_SELECTED_CATEGORY, payload: "all" })
             dispatch(GlobalReducerActions.hidePageLoader());
         } catch (error) {
             console.log(error)

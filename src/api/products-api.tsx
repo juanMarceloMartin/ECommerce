@@ -1,4 +1,5 @@
 import axios from 'axios';
+import IProduct from '../commons/interfaces/IProduct';
 
 const url = 'https://fakestoreapi.com/products';
 
@@ -60,10 +61,39 @@ async function selectCategory(category: string) {
     }
 }
 
+async function getSelectedProduct(id: number) {
+    try {
+        const response = await axios.get(`${url}/${id}`)
+        const productImage = response.data.image;
+        response.data.image = [];
+        for (let i = 0; i < 4; i++) {
+            response.data.image.push(productImage);
+        }
+        if (response.data.category.includes("clothing")) {
+            response.data.colors = ["#FF5733", "#FFFC33", "#33FFBF", "#3386FF"]
+        }
+        return response.data;
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+async function getRelatedProducts(id: number) {
+    try {
+        const selectedProduct = await axios.get(`${url}/${id}`)
+        const relatedProducts = await axios.get(`${url}/category/${selectedProduct.data.category}`)
+        const response = relatedProducts.data.filter((item: IProduct) => item.id !== id)
+        return response;
+    } catch (error) {
+        console.log(error)
+    }
+}
 
 export const ProductsApi = {
     getList,
     getCategories,
     selectCategory,
-    getLisOfNewItems
+    getLisOfNewItems,
+    getSelectedProduct,
+    getRelatedProducts
 }

@@ -1,4 +1,4 @@
-export default interface IProduct {
+export default interface IReducerAction {
     type: string,
     payload?: any
 }

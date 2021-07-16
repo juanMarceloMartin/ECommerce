@@ -94,7 +94,7 @@ const CartItem: FC<Props> = ({ item }) => {
                     </div>
                 </div>
                 <div className={classes.imgContainer}>
-                    <img className={classes.img} src={item.image} alt={item.title} />
+                    <img className={classes.img} src={item.image[0]} alt={item.title} />
                 </div>
             </div>
         </div>
