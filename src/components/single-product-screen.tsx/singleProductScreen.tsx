@@ -80,6 +80,7 @@ const SingleProductScreen: FC = () => {
         dispatch(SingleProductReducerActions.getSelectedProduct(selectedProductId));
         dispatch(SingleProductReducerActions.getRelatedProducts(selectedProductId));
         // eslint-disable-next-line react-hooks/exhaustive-deps
+        window.scrollTo(0, 0);
     }, [selectedProductId])
 
     useEffect(() => {
