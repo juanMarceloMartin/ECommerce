@@ -14,7 +14,6 @@ import { Link } from "react-router-dom";
 const useStyles = makeStyles((theme) => ({
     image: {
         width: "100%",
-        height: "600px"
     },
     category: {
         background: "black",
@@ -58,7 +57,8 @@ const Landing: FC = () => {
         slidesToScroll: 1,
         arrows: false,
         draggable: true,
-        accessibility: true
+        accessibility: true,
+        adaptiveHeight: true
     };
 
     function handleSelectCategory(category: string) {
