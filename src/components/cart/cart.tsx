@@ -12,7 +12,7 @@ const useStyles = makeStyles({
   },
   checkOut: {
     width: "100%",
-    marginTop: "30px"
+    margin: "30px 0"
   }
 });
 
