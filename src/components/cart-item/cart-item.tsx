@@ -1,9 +1,10 @@
 import { FC } from 'react';
-import { Button, makeStyles } from '@material-ui/core';
+import { makeStyles, Grid } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import ICartItem from '../../commons/interfaces/ICartItem';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import { CartReducerActions } from '../../reducers/cart-reducer';
+import ItemQuantityButtons from '../itemQuantityButtons/itemQuantityButtons';
 
 type Props = {
     item: ICartItem;
@@ -16,87 +17,63 @@ const useStyles = makeStyles((theme) => ({
     title: {
         paddingTop: "15px",
     },
-    infoContainer: {
-        float: "left",
-        width: "75%"
-    },
-    information: {
-        display: "flex",
-        justifyContent: "space-between",
-        marginBottom: "2px"
-    },
-    buttons: {
-        display: "flex",
-        justifyContent: "space-between",
-        marginBottom: "2px",
-        paddingBottom: "20px",
-        paddingRight: "30px",
-        paddingLeft: "30px"
-    },
-    imgContainer: {
-        float: "left",
-        width: "20%",
-        height: "140px",
-    },
     img: {
-        maxWidth: "60px",
-        maxHeight: "95px",
+        width: "70%",
         objectFit: "cover",
-        marginLeft: "40px",
-        marginTop: "10px",
-        paddingTop: "10px",
+        paddingTop: "5px",
         verticalAlign: "middle"
-    },
-    button: {
-        margin: theme.spacing(1),
-        width: "95%"
-    },
+    }
 }));
-
-
 
 const CartItem: FC<Props> = ({ item }) => {
     const classes = useStyles();
     const dispatch = useDispatch();
 
+    function setImage() {
+        let response;
+        if (Array.isArray(item.image)) {
+            response = item.image[0];
+        } else {
+            response = item.image;
+        }
+        return response;
+    }
+
+    function handleDecrement() {
+        dispatch(CartReducerActions.substractOneUnit(item.id))
+    };
+
+    function handleIncrement() {
+        dispatch(CartReducerActions.addOneUnit(item.id))
+    };
+
     return (
         <div>
-            <div className={classes.container}>
-                <h3
-                    className={classes.title}>{item.title}
-                    <span onClick={() => dispatch(CartReducerActions.removeItem(item.id))}>
-                        <DeleteOutlineIcon style={{ float: "right", cursor: "pointer" }} />
-                    </span>
-                </h3>
-                <div className={classes.infoContainer}>
-                    <div className={classes.information}>
-                        <p>Price: ${item.price}</p>
-                        <p>Total: ${(item.quantity * item.price).toFixed(2)}</p>
+            <Grid container>
+                <Grid item xs={11}>
+                    <h3>{item.title}
+                    </h3>
+                </Grid>
+                <Grid item xs={1}>
+                    <div onClick={() => dispatch(CartReducerActions.removeItem(item.id))}>
+                        <DeleteOutlineIcon style={{ marginTop: "19px", cursor: "pointer" }} />
                     </div>
-                    <div className={classes.buttons}>
-                        <Button
-                            size='small'
-                            disableElevation
-                            variant='contained'
-                            onClick={() => dispatch(CartReducerActions.substractOneUnit(item.id))}
-                        >
-                            -
-                        </Button>
-                        <p>{item.quantity}</p>
-                        <Button
-                            size='small'
-                            disableElevation
-                            variant='contained'
-                            onClick={() => dispatch(CartReducerActions.addOneUnit(item.id))}
-                        >
-                            +
-                        </Button>
+                </Grid>
+                <Grid item xs={6}>
+                    <img className={classes.img} src={setImage()} alt={item.title} />
+                </Grid>
+                <Grid item xs={6}>
+                    <div style={{ paddingTop: "15%", paddingLeft: "10px" }}>
+                        <ItemQuantityButtons quantity={item.quantity} handleDecrement={handleDecrement} handleIncrement={handleIncrement} />
                     </div>
-                </div>
-                <div className={classes.imgContainer}>
-                    <img className={classes.img} src={item.image[0]} alt={item.title} />
-                </div>
-            </div>
+                </Grid>
+                <Grid item xs={8}>
+                    <p>Price: ${item.price}</p>
+                </Grid>
+                <Grid item xs={4}>
+                    <p>Total: ${(item.quantity * item.price).toFixed(2)}</p>
+                </Grid>
+            </Grid>
         </div>
     )
 };

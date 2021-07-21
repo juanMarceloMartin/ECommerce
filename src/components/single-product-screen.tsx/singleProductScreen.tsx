@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { makeStyles, Grid, ButtonGroup, Button } from '@material-ui/core';
 import IStore from '../../commons/interfaces/IStore';
 import AddToCartButton from '../addToCartButton/add-to-cart-button';
+import ItemQuantityButtons from '../itemQuantityButtons/itemQuantityButtons';
 import { SingleProductReducerActions } from '../../reducers/single-product-reducer';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import ProductsWrapper from '../products-wrapper/products-wrapper';
@@ -165,11 +166,7 @@ const SingleProductScreen: FC = () => {
                                 </>
                             }
                             <div className={classes.marginClass}>
-                                <ButtonGroup size="medium" color="primary" aria-label="large outlined primary button group">
-                                    <Button onClick={handleDecrement}>-</Button>
-                                    <Button>{qty}</Button>
-                                    <Button onClick={handleIncrement}>+</Button>
-                                </ButtonGroup>
+                                <ItemQuantityButtons quantity={qty} handleDecrement={handleDecrement} handleIncrement={handleIncrement} />
                             </div>
                             <div>
                                 <AddToCartButton product={selectedProduct} quantity={qty} />
