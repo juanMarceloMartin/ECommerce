@@ -28,7 +28,6 @@ const useStyles = makeStyles((theme) => ({
     },
     banner: {
         background: "#ccc",
-
         color: "white",
         fontSize: "20px",
         textAlign: "center",

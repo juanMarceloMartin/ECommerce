@@ -8,9 +8,11 @@ import ItemQuantityButtons from '../itemQuantityButtons/itemQuantityButtons';
 
 type Props = {
     item: ICartItem;
+    cart?: boolean;
+    checkout?: boolean
 };
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
     container: {
         width: "100%",
     },
@@ -18,14 +20,14 @@ const useStyles = makeStyles((theme) => ({
         paddingTop: "15px",
     },
     img: {
-        width: "70%",
+        height: "90%",
         objectFit: "cover",
         paddingTop: "5px",
         verticalAlign: "middle"
     }
 }));
 
-const CartItem: FC<Props> = ({ item }) => {
+const CartItem: FC<Props> = ({ item, cart, checkout }) => {
     const classes = useStyles();
     const dispatch = useDispatch();
 
@@ -50,21 +52,40 @@ const CartItem: FC<Props> = ({ item }) => {
     return (
         <div>
             <Grid container>
-                <Grid item xs={11}>
-                    <h3>{item.title}
-                    </h3>
-                </Grid>
-                <Grid item xs={1}>
-                    <div onClick={() => dispatch(CartReducerActions.removeItem(item.id))}>
-                        <DeleteOutlineIcon style={{ marginTop: "19px", cursor: "pointer" }} />
+                {cart &&
+                    <>
+                        <Grid item xs={11}>
+                            <h3>{item.title}
+                            </h3>
+                        </Grid>
+                        <Grid item xs={1}>
+                            <div onClick={() => dispatch(CartReducerActions.removeItem(item.id))}>
+                                <DeleteOutlineIcon style={{ marginTop: "19px", cursor: "pointer" }} />
+                            </div>
+                        </Grid>
+                    </>
+                }
+                {checkout &&
+                    <>
+                        <Grid item xs={12}>
+                            <h3>{item.title}
+                            </h3>
+                        </Grid>
+                    </>
+                }
+                <Grid item xs={6}>
+                    <div style={{ height: "100px", paddingLeft: "20%" }}>
+                        <img className={classes.img} src={setImage()} alt={item.title} />
                     </div>
                 </Grid>
                 <Grid item xs={6}>
-                    <img className={classes.img} src={setImage()} alt={item.title} />
-                </Grid>
-                <Grid item xs={6}>
-                    <div style={{ paddingTop: "15%", paddingLeft: "10px" }}>
-                        <ItemQuantityButtons quantity={item.quantity} handleDecrement={handleDecrement} handleIncrement={handleIncrement} />
+                    <div style={{ paddingTop: "10%", paddingLeft: "10px" }}>
+                        {cart &&
+                            <ItemQuantityButtons quantity={item.quantity} handleDecrement={handleDecrement} handleIncrement={handleIncrement} />
+                        }
+                        {checkout &&
+                            <div style={{ textAlign: "center" }}>x {item.quantity} </div>
+                        }
                     </div>
                 </Grid>
                 <Grid item xs={8}>

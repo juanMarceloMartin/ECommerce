@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import IStore from '../../commons/interfaces/IStore';
 import { Button, makeStyles } from '@material-ui/core';
 import CartItem from '../cart-item/cart-item';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles({
   root: {
@@ -39,7 +40,7 @@ const Cart: FC = () => {
           <div>
             <h1>Your order</h1>
             {
-              list?.map(item => <CartItem key={item.id} item={item} />)
+              list?.map(item => <CartItem key={item.id} item={item} cart={true} />)
             }
           </div>
           <div>
@@ -49,7 +50,9 @@ const Cart: FC = () => {
             <h2><strong>Estimated Total <span style={{ float: "right" }}>$ {(subtotal + 10).toFixed(2)}</span></strong></h2>
           </div>
           <Button className={classes.checkOut} variant="contained" color="primary">
-            CHECK OUT HERE
+            <Link to="/checkout" style={{ textDecoration: "none", color: "white" }}>
+              CHECKOUT
+            </Link>
           </Button>
         </div>
         :

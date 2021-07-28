@@ -6,6 +6,7 @@ import ProductsScreen from './components/products-screen/products-screen';
 import PageLoader from './components/page-loader/page-loader';
 import Footer from './components/footer/footer';
 import SingleProductScreen from './components/single-product-screen.tsx/singleProductScreen';
+import CheckoutScreen from './components/checkout-screen/checkout-screen';
 
 function App() {
 
@@ -19,6 +20,7 @@ function App() {
             <Route exact path="/" component={Landing}></Route>
             <Route exact path="/product" component={SingleProductScreen}></Route>
             <Route exact path="/products" component={ProductsScreen}></Route>
+            <Route exact path ="/checkout" component={CheckoutScreen}></Route>
           </Switch>
         </div>
         <Footer />
