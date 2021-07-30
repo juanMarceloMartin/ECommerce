@@ -1,20 +1,43 @@
-import { FC, useState } from 'react';
+import { FC, useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { FormControl, InputLabel, FormHelperText, OutlinedInput } from '@material-ui/core';
 import LuxonUtils from '@date-io/luxon';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import { CHECKOUT_REDUCER_TIPES } from '../../reducers/checkout-reducer';
 interface IProps {
     label: string
     required?: boolean
+    stateKey: string
 }
 
-const FormInput: FC<IProps> = ({ label, required }) => {
-    const [inputValue, setInputValue] = useState('');
+const FormInput: FC<IProps> = ({ label, required, stateKey }) => {
+    const dispatch = useDispatch();
     const [dateValue, setDateValue] = useState(new Date())
     const [inputError, setInputError] = useState(false);
     const [valueIsEmpty, setValueIsEmpty] = useState(false);
+    const inputValue = useSelector((state: any) => state.checkout[stateKey])
+    const inputType = label === "Security Code" ? "password" : "text";
 
     const handleChange = (event: any) => {
-        setInputValue(event.target.value);
+        let action = Object.keys(CHECKOUT_REDUCER_TIPES).filter((type: string) => type.toLocaleLowerCase().includes(label.split(" ").join("").toLocaleLowerCase()))[0];
+
+        if (label.toLocaleLowerCase().includes("card")) {
+            if (label.toLocaleLowerCase().includes("number")) {
+                action = CHECKOUT_REDUCER_TIPES.SET_CARD_NUMBER;
+            }
+
+            if (label.toLocaleLowerCase().includes("name")) {
+                action = CHECKOUT_REDUCER_TIPES.SET_NAME_ON_CARD;
+            }
+        }
+
+        if (label.toLocaleLowerCase().includes("security")) {
+            action = CHECKOUT_REDUCER_TIPES.SET_SECURITY_CODE;
+        }
+
+        if (action) {
+            dispatch({ type: action, payload: event.target.value })
+        }
     };
 
     const handleDateChange = (event: any) => {
@@ -74,6 +97,14 @@ const FormInput: FC<IProps> = ({ label, required }) => {
         }
     }
 
+    useEffect(() => {
+        const item = localStorage.getItem(stateKey)
+        if (!item?.length) {
+            localStorage.setItem(stateKey, "")
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
     return (
         <>
             {label === "Expiration Date" ?
@@ -95,7 +126,7 @@ const FormInput: FC<IProps> = ({ label, required }) => {
                 :
                 <FormControl style={{ width: "100%" }} variant="outlined">
                     <InputLabel htmlFor="component-outlined">{label}</InputLabel>
-                    <OutlinedInput style={{ margin: "11px 5px" }} onBlur={() => validateValue()} error={inputError || valueIsEmpty} id="component-outlined" value={inputValue} onChange={handleChange} label={label} />
+                    <OutlinedInput type={inputType} value={inputValue} style={{ margin: "11px 5px" }} onBlur={() => validateValue()} error={inputError || valueIsEmpty} id={label} onChange={handleChange} label={label} />
                     {inputError &&
                         <FormHelperText error>{label} format is incorrect</FormHelperText>
                     }

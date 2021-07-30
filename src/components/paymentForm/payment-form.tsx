@@ -1,8 +1,11 @@
+import { FC } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { CHECKOUT_REDUCER_TIPES } from '../../reducers/checkout-reducer';
 import { makeStyles, Checkbox, Collapse, Grid, List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
-import { FC, useState } from 'react';
 import FormInput from '../form-input/form-input';
 import CreditCardIcon from '@material-ui/icons/CreditCard';
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
+import IStore from '../../commons/interfaces/IStore';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -15,25 +18,17 @@ const useStyles = makeStyles((theme) => ({
 
 const PaymentForm: FC = () => {
     const classes = useStyles();
-    const [creditCardChecked, setCredirCardChecked] = useState(false);
-    const [cashChecked, setCashChecked] = useState(false);
-    const [open, setOpen] = useState(false);
+    const dispatch = useDispatch();
+    const creditCardSelected = useSelector((state: IStore) => state.checkout.cardPayment);
+    const cashSelected = useSelector((state: IStore) => state.checkout.cashPayment);
 
-    const handleCreditCardCheckChange = (event: any) => {
-        setCredirCardChecked(event.target.checked);
-        setCashChecked(false);
-    };
+    const handleCreditCardCheck = () => {
+        dispatch({ type: CHECKOUT_REDUCER_TIPES.SET_CARD_PAYMENT })
+    }
 
-    const handleClick = (event: any) => {
-        setOpen(!open);
-        handleCreditCardCheckChange(event);
-    };
-
-    const handleCashCheckChange = (event: any) => {
-        setCashChecked(event.target.checked);
-        setCredirCardChecked(false);
-        setOpen(false);
-    };
+    const handleCashCheck = () => {
+        dispatch({ type: CHECKOUT_REDUCER_TIPES.SET_CASH_PAYMENT })
+    }
 
     return (
         <Grid container>
@@ -44,33 +39,33 @@ const PaymentForm: FC = () => {
                     aria-labelledby="nested-list-subheader"
                     className={classes.root}
                 >
-                    <ListItem button onClick={handleClick}>
+                    <ListItem button>
                         <ListItemIcon>
                             <CreditCardIcon />
                         </ListItemIcon>
                         <ListItemText primary="Credit Card" />
                         <Checkbox
-                            checked={creditCardChecked}
+                            checked={creditCardSelected}
                             color="primary"
                             inputProps={{ 'aria-label': 'secondary checkbox' }}
-                            onChange={handleClick}
+                            onChange={handleCreditCardCheck}
                         />
                     </ListItem>
-                    <Collapse in={open} timeout="auto" unmountOnExit>
+                    <Collapse in={creditCardSelected} timeout="auto" unmountOnExit>
                         <List component="div" disablePadding>
                             <ListItem button className={classes.nested}>
                                 <Grid container>
                                     <Grid item xs={12}>
-                                        <FormInput label="Card Number" required={true} />
+                                        <FormInput label="Card Number" required={true} stateKey="cardNumber" />
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <FormInput label="Name on Card" required={true} />
+                                        <FormInput label="Name on Card" required={true} stateKey="nameOnCard" />
                                     </Grid>
                                     <Grid item xs={6}>
-                                        <FormInput label="Expiration Date" required={true} />
+                                        <FormInput label="Expiration Date" required={true} stateKey="expirationDate" />
                                     </Grid>
                                     <Grid item xs={6}>
-                                        <FormInput label="Security Code" required={true} />
+                                        <FormInput label="Security Code" required={true} stateKey="securityCode" />
                                     </Grid>
                                 </Grid>
                             </ListItem>
@@ -82,10 +77,10 @@ const PaymentForm: FC = () => {
                         </ListItemIcon>
                         <ListItemText primary="Cash" />
                         <Checkbox
-                            checked={cashChecked}
+                            checked={cashSelected}
                             color="primary"
                             inputProps={{ 'aria-label': 'secondary checkbox' }}
-                            onChange={(e: any) => handleCashCheckChange(e)}
+                            onChange={handleCashCheck}
                         />
                     </ListItem>
                 </List>
