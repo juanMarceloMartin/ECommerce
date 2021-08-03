@@ -41,6 +41,7 @@ export const CHECKOUT_REDUCER_TIPES = {
     SET_NAME_ON_CARD: "SET_NAME_ON_CARD",
     SET_EXPIRATION_DATE: "SET_EXPIRATION_DATE",
     SET_SECURITY_CODE: "SET_SECURITY_CODE",
+    RESET_PAYMENT_INFORMATION: "RESET_PAYMENT_INFORMATION",
     SET_INPUT_ERROR: "SET_INPUT_ERROR",
     SET_OPEN_PURCHASE_CONFIRMATION_DIALOG: "SET_OPEN_PURCHASE_CONFIRMATION_DIALOG"
 }
@@ -141,6 +142,22 @@ export const checkoutReducer = (state = CHECKOUT_INITIAL_STATE, action: IReducer
                 cashPayment: false,
             }
 
+        case CHECKOUT_REDUCER_TIPES.RESET_PAYMENT_INFORMATION:
+            localStorage.setItem("cardNumber", "")
+            localStorage.setItem("nameOnCard", "")
+            localStorage.setItem("expirationDate", "")
+            localStorage.setItem("securityCode", "")
+
+            return {
+                ...state,
+                cashPayment: false,
+                cardPayment: false,
+                cardNumber: "",
+                nameOnCard: "",
+                expirationDate: "",
+                securityCode: ""
+            }
+
         case CHECKOUT_REDUCER_TIPES.SET_CARD_NUMBER:
             localStorage.setItem("cardNumber", payload)
             return {
@@ -208,6 +225,7 @@ const setOpenConfirmationDialog = () => {
             dispatch(GlobalReducerActions.hidePageLoader());
             if (approvedPayment) {
                 dispatch({ type: CHECKOUT_REDUCER_TIPES.SET_OPEN_PURCHASE_CONFIRMATION_DIALOG, payload: true })
+                dispatch({ type: CHECKOUT_REDUCER_TIPES.RESET_PAYMENT_INFORMATION })
             }
         } catch (error) {
             console.log(error)
