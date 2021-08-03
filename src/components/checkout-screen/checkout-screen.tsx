@@ -1,5 +1,5 @@
 import { FC, useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { makeStyles, Grid, Stepper, Step, Typography, StepLabel, Button, ListItem, ListItemIcon, List, ListItemText, Collapse, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
 import { ExpandMore, ExpandLess } from '@material-ui/icons';
 import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
@@ -9,7 +9,9 @@ import PaymentForm from '../paymentForm/payment-form';
 import PurchaseConfirmationForm from '../purchase-confirmation-form/purchase-confirmation-form';
 import './checkout-screen.css'
 import { useHistory } from 'react-router';
-import { CartReducerActions } from '../../reducers/cart-reducer';
+import { CartReducerActions, CART_REDUCER_TYPES } from '../../reducers/cart-reducer';
+import { CheckoutReducerActions } from '../../reducers/checkout-reducer';
+import IStore from '../../commons/interfaces/IStore';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -52,10 +54,12 @@ const useStyles = makeStyles((theme) => ({
 const CheckoutScreen: FC = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
+    const formFields: any = useSelector((state: IStore) => state.checkout);
+    const inputErrors: any = useSelector((state: IStore) => state.checkout.inputErrors);
+    const openPurchaseConfirmationDialog = useSelector((state: IStore) => state.checkout.openPurchaseConfirmationDialog);
     const [activeStep, setActiveStep] = useState(0);
     const steps = getSteps();
     const [openOrderSummary, setOpenOrderSummary] = useState(false);
-    const [open, setOpen] = useState(false);
     const history = useHistory();
 
     const handleOrderSummaryClick = () => {
@@ -71,7 +75,8 @@ const CheckoutScreen: FC = () => {
     };
 
     const handleClose = () => {
-        setOpen(false);
+        dispatch(CheckoutReducerActions.setCloseConfirmationDialog());
+        dispatch({ type: CART_REDUCER_TYPES.RESET_CART })
         history.push("/");
     };
 
@@ -96,6 +101,53 @@ const CheckoutScreen: FC = () => {
         }
     }
 
+    const firstStepRequiredFields = ["firstName", "email", "lastName", "address", "zipcode", "city", "state", "country", "phone"];
+
+    const SecondStepRequiredFields = ["cardNumber", "nameOnCard", "expirationDate", "securityCode"]
+
+    function enableNextButton() {
+        let response = false
+
+        if (activeStep === 0) {
+
+            for (let i of firstStepRequiredFields) {
+                if (!formFields[i]) {
+                    response = true;
+                }
+            }
+
+            for (let i of firstStepRequiredFields) {
+                if (inputErrors[i]) {
+                    response = true;
+                }
+            }
+        }
+
+        if (activeStep === 1) {
+
+            if (!formFields.cashPayment && !formFields.cardPayment) {
+                response = true;
+            }
+
+            if (formFields.cardPayment) {
+
+                for (let i of SecondStepRequiredFields) {
+                    if (!formFields[i]) {
+                        response = true;
+                    }
+                }
+
+                for (let i of SecondStepRequiredFields) {
+                    if (inputErrors[i]) {
+                        response = true;
+                    }
+                }
+            }
+        }
+
+        return response;
+    }
+
     useEffect(() => {
         dispatch(CartReducerActions.hideCartIcon());
 
@@ -107,7 +159,7 @@ const CheckoutScreen: FC = () => {
 
     useEffect(() => {
         if (activeStep === steps.length) {
-            setOpen(true);
+            dispatch(CheckoutReducerActions.setOpenConfirmationDialog());
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [activeStep])
@@ -161,6 +213,7 @@ const CheckoutScreen: FC = () => {
                                             color="primary"
                                             onClick={handleNext}
                                             className={classes.button}
+                                            disabled={enableNextButton()}
                                         >
                                             {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
                                         </Button>
@@ -178,7 +231,7 @@ const CheckoutScreen: FC = () => {
             </Grid>
             <div>
                 <Dialog
-                    open={open}
+                    open={openPurchaseConfirmationDialog}
                     onClose={handleClose}
                     aria-labelledby="alert-dialog-title"
                     aria-describedby="alert-dialog-description"

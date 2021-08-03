@@ -37,7 +37,6 @@ const Navbar: FC = () => {
     const displayMenuIcon = useSelector((state: IStore) => state.global.displayMenuIcon);
     const displayCartIcon = useSelector((state: IStore) => state.cart.displayCartIcon);
     const openCart = useSelector((state: IStore) => state.cart.openCart);
-    console.log(openCart)
     const dispatch = useDispatch();
     const classes = useStyles();
 

@@ -1,5 +1,7 @@
 
+import { CheckoutApi } from '../api/checkout-api';
 import IReducerAction from '../commons/interfaces/IReducerAction';
+import { GlobalReducerActions } from './global-reducer';
 
 const CHECKOUT_INITIAL_STATE = {
     email: localStorage.getItem("email"),
@@ -17,7 +19,9 @@ const CHECKOUT_INITIAL_STATE = {
     cardNumber: localStorage.getItem("cardNumber"),
     nameOnCard: localStorage.getItem("nameOnCard"),
     expirationDate: localStorage.getItem("expirationDate"),
-    securityCode: localStorage.getItem("securityCode")
+    securityCode: localStorage.getItem("securityCode"),
+    openPurchaseConfirmationDialog: false,
+    inputErrors: {}
 }
 
 export const CHECKOUT_REDUCER_TIPES = {
@@ -36,7 +40,9 @@ export const CHECKOUT_REDUCER_TIPES = {
     SET_CARD_NUMBER: "SET_CARD_NUMBER",
     SET_NAME_ON_CARD: "SET_NAME_ON_CARD",
     SET_EXPIRATION_DATE: "SET_EXPIRATION_DATE",
-    SET_SECURITY_CODE: "SET_SECURITY_CODE"
+    SET_SECURITY_CODE: "SET_SECURITY_CODE",
+    SET_INPUT_ERROR: "SET_INPUT_ERROR",
+    SET_OPEN_PURCHASE_CONFIRMATION_DIALOG: "SET_OPEN_PURCHASE_CONFIRMATION_DIALOG"
 }
 
 export const checkoutReducer = (state = CHECKOUT_INITIAL_STATE, action: IReducerAction) => {
@@ -163,9 +169,64 @@ export const checkoutReducer = (state = CHECKOUT_INITIAL_STATE, action: IReducer
                 securityCode: payload
             }
 
+        case CHECKOUT_REDUCER_TIPES.SET_INPUT_ERROR:
+            return {
+                ...state,
+                inputErrors: {
+                    ...state.inputErrors,
+                    ...payload
+                }
+            }
+
+        case CHECKOUT_REDUCER_TIPES.SET_OPEN_PURCHASE_CONFIRMATION_DIALOG:
+            return {
+                ...state,
+                openPurchaseConfirmationDialog: payload
+            }
 
         default:
             return state;
     }
 
 };
+
+const setInputError = (errorObject: {}) => {
+    return async (dispatch: any) => {
+        try {
+            dispatch({ type: CHECKOUT_REDUCER_TIPES.SET_INPUT_ERROR, payload: errorObject })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+};
+
+const setOpenConfirmationDialog = () => {
+    return async (dispatch: any) => {
+        try {
+            dispatch(GlobalReducerActions.showPageLoader());
+            const approvedPayment = await CheckoutApi.checkPaymentApproval();
+            dispatch(GlobalReducerActions.hidePageLoader());
+            if (approvedPayment) {
+                dispatch({ type: CHECKOUT_REDUCER_TIPES.SET_OPEN_PURCHASE_CONFIRMATION_DIALOG, payload: true })
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+}
+
+const setCloseConfirmationDialog = () => {
+    return async (dispatch: any) => {
+        try {
+            dispatch({ type: CHECKOUT_REDUCER_TIPES.SET_OPEN_PURCHASE_CONFIRMATION_DIALOG, payload: false })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+}
+
+export const CheckoutReducerActions = {
+    setInputError,
+    setOpenConfirmationDialog,
+    setCloseConfirmationDialog
+}

@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { CHECKOUT_REDUCER_TIPES } from '../../reducers/checkout-reducer';
 import { makeStyles, Checkbox, Collapse, Grid, List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
@@ -21,6 +21,10 @@ const PaymentForm: FC = () => {
     const dispatch = useDispatch();
     const creditCardSelected = useSelector((state: IStore) => state.checkout.cardPayment);
     const cashSelected = useSelector((state: IStore) => state.checkout.cashPayment);
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     const handleCreditCardCheck = () => {
         dispatch({ type: CHECKOUT_REDUCER_TIPES.SET_CARD_PAYMENT })

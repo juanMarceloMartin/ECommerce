@@ -1,3 +1,19 @@
+interface inputErrors {
+    firstName: boolean
+    email: boolean
+    lastName: boolean
+    address: boolean
+    zipcode: boolean
+    city: boolean
+    state: boolean
+    country: boolean
+    phone: boolean
+    cardNumber: boolean
+    nameOnCard: boolean
+    expirationDate: boolean
+    securityCode: boolean
+}
+
 export default interface ICheckoutState {
     email: string,
     firstName: string,
@@ -9,10 +25,12 @@ export default interface ICheckoutState {
     state: string,
     country: string,
     phone: string,
-    cashPayment: false,
-    cardPayment: false,
+    cashPayment: boolean,
+    cardPayment: boolean,
     cardNumber: string,
     nameOnCard: string,
     expirationDate: string,
-    securityCode: string
+    securityCode: string,
+    openPurchaseConfirmationDialog: boolean,
+    inputErrors: inputErrors
 }

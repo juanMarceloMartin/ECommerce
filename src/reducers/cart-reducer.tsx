@@ -16,7 +16,8 @@ export const CART_REDUCER_TYPES = {
     SUBSTRACT_UNIT: "SUBSTRACT_UNIT",
     REMOVE_ITEM: "REMOVE_ITEM",
     SET_OPEN_CART: "SET_OPEN_CART",
-    SET_DISPLAY_CART_ICON: "SET_DISPLAY_CART_ICON"
+    SET_DISPLAY_CART_ICON: "SET_DISPLAY_CART_ICON",
+    RESET_CART: "RESET_CART"
 }
 
 function handleQtyChanges(state: ICartState, id: number, instruction: string) {
@@ -90,6 +91,12 @@ export const cartReducer = (state = CART_INITIAL_STATE, action: IReducerAction) 
             return {
                 ...state,
                 displayCartIcon: payload
+            }
+
+        case CART_REDUCER_TYPES.RESET_CART:
+            return {
+                ...state,
+                list: []
             }
 
 
