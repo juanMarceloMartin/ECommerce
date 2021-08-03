@@ -36,14 +36,15 @@ async function getCategories() {
         const response = await axios.get(`${url}/categories`)
         const result: {}[] = [];
         response.data.forEach((element: string) => {
+            const categoryObj = { name: element.toUpperCase() }
             if (element === "electronics") {
-                result.push({ name: element, image: "/landing/tech.jpg" })
+                result.push({ ...categoryObj, image: "/landing/tech.jpg" })
             } else if (element === "jewelery") {
-                result.push({ name: element, image: "/landing/jewelery.jpg" })
+                result.push({ ...categoryObj, image: "/landing/jewelery.jpg" })
             } else if (element === "men's clothing") {
-                result.push({ name: element, image: "/landing/mens-clothing.jpg" })
+                result.push({ ...categoryObj, image: "/landing/mens-clothing.jpg" })
             } else if (element === "women's clothing") {
-                result.push({ name: element, image: "/landing/womans-clothing.jpg" })
+                result.push({ ...categoryObj, image: "/landing/womans-clothing.jpg" })
             }
         })
         return result;

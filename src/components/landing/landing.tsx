@@ -61,8 +61,8 @@ const Landing: FC = () => {
     };
 
     function handleSelectCategory(category: string) {
-        if (category === "all") {
-            dispatch({ type: PRODUCTS_REDUCER_TYPES.SET_SELECTED_CATEGORY, payload: "all" })
+        if (category === "ALL") {
+            dispatch({ type: PRODUCTS_REDUCER_TYPES.SET_SELECTED_CATEGORY, payload: "ALL" })
         } else {
             dispatch({ type: PRODUCTS_REDUCER_TYPES.SET_SELECTED_CATEGORY, payload: category })
         }
@@ -85,7 +85,7 @@ const Landing: FC = () => {
             <Slider {...settings}>
                 {categories?.map((category: any) => {
                     let response = null;
-                    if (category.name !== "all") {
+                    if (category.name !== "ALL") {
                         response =
                             <div key={category.name}>
                                 <img className={classes.image} src={category.image} alt="" />

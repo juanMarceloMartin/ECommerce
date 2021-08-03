@@ -14,7 +14,7 @@ const ProductsScreen: FC = () => {
     const isPageLoading = useSelector((state: IStore) => state.global.isPageLoading);
 
     useEffect(() => {
-        if (currentCategory === "all") {
+        if (currentCategory === "ALL") {
             dispatch(ProductsReducerActions.getList());
         } else {
             if (currentCategory) {
