@@ -1,9 +1,10 @@
 import { FC, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from "react-router-dom";
+import { CartReducerActions } from '../../reducers/cart-reducer';
 import IStore from '../../commons/interfaces/IStore';
 import { Button, makeStyles } from '@material-ui/core';
 import CartItem from '../cart-item/cart-item';
-import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles({
   root: {
@@ -19,10 +20,17 @@ const useStyles = makeStyles({
 
 const Cart: FC = () => {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const history = useHistory();
   const itemsList = useSelector((state: IStore) => state.cart.list);
   const totalQtyInCart = useSelector((state: IStore) => state.cart.total);
   const [subtotal, setSubtotal] = useState(0);
   const [list, setList] = useState(itemsList);
+
+  const handleCheckout = () => {
+    dispatch(CartReducerActions.closeCart());
+    history.push('/checkout')
+  }
 
   useEffect(() => {
     setList(itemsList);
@@ -49,11 +57,9 @@ const Cart: FC = () => {
             <p>Estimated Shipping <span style={{ float: "right" }}>from $ 10.00</span> </p>
             <h2><strong>Estimated Total <span style={{ float: "right" }}>$ {(subtotal + 10).toFixed(2)}</span></strong></h2>
           </div>
-          <Button className={classes.checkOut} variant="contained" color="primary">
-            <Link to="/checkout" style={{ textDecoration: "none", color: "white" }}>
+            <Button onClick={() => handleCheckout()} className={classes.checkOut} variant="contained" color="primary">
               CHECKOUT
-            </Link>
-          </Button>
+            </Button>
         </div>
         :
         <>

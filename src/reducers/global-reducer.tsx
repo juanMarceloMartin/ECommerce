@@ -3,13 +3,17 @@ import IReducerAction from '../commons/interfaces/IReducerAction';
 const GLOBAL_INITIAL_STATE = {
     isPageLoading: false,
     isSidebarOpen: false,
-    displayMenuIcon: true
+    displayMenuIcon: true,
+    openCart: false,
+    displayCartIcon: true
 }
 
 export const GLOBAL_REDUCER_TYPES = {
     SET_LOADER: "SET_LOADER",
     SET_SIDEBAR: "SET_SIDEBAR",
-    SET_DISPLAY_MENU_ICON: "SET_DISPLAY_MENU_ICON"
+    SET_DISPLAY_MENU_ICON: "SET_DISPLAY_MENU_ICON",
+    SET_OPEN_CART: "SET_OPEN_CART",
+    SET_DISPLAY_CART_ICON: "SET_DISPLAY_CART_ICON"
 }
 
 export const globalReducer = (state = GLOBAL_INITIAL_STATE, action: IReducerAction) => {
@@ -32,7 +36,6 @@ export const globalReducer = (state = GLOBAL_INITIAL_STATE, action: IReducerActi
                 ...state,
                 displayMenuIcon: payload
             }
-
         default:
             return state;
     }
@@ -88,7 +91,6 @@ const hideMenuIcon = () => {
         }
     }
 };
-
 
 export const GlobalReducerActions = {
     showPageLoader,

@@ -1,10 +1,11 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Drawer, Badge, makeStyles } from '@material-ui/core';
 import ShoppingCartRoundedIcon from '@material-ui/icons/ShoppingCartRounded';
 import IStore from '../../commons/interfaces/IStore';
 import Cart from '../cart/cart';
 import { GlobalReducerActions } from '../../reducers/global-reducer';
+import { CartReducerActions } from '../../reducers/cart-reducer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -34,7 +35,9 @@ const useStyles = makeStyles((theme) => ({
 const Navbar: FC = () => {
     const cartContent = useSelector((state: IStore) => state.cart.list.length);
     const displayMenuIcon = useSelector((state: IStore) => state.global.displayMenuIcon);
-    const [cartOpen, setCartOpen] = useState(false);
+    const displayCartIcon = useSelector((state: IStore) => state.cart.displayCartIcon);
+    const openCart = useSelector((state: IStore) => state.cart.openCart);
+    console.log(openCart)
     const dispatch = useDispatch();
     const classes = useStyles();
 
@@ -52,14 +55,16 @@ const Navbar: FC = () => {
                     <Link to="/" style={{ textDecoration: "none" }}>
                         <h1 className={classes.navTitle}>FAK-E-COMMERCE</h1>
                     </Link>
-                    <div style={{ marginLeft: "auto" }}>
-                        <IconButton color="inherit" edge="end" onClick={() => setCartOpen(true)} >
-                            <Badge color="error" badgeContent={cartContent}>
-                                <ShoppingCartRoundedIcon />
-                            </Badge>
-                        </IconButton>
-                    </div>
-                    <Drawer anchor='right' open={cartOpen} onClose={() => setCartOpen(false)}>
+                    {displayCartIcon &&
+                        <div style={{ marginLeft: "auto" }}>
+                            <IconButton color="inherit" edge="end" onClick={() => dispatch(CartReducerActions.openCart())} >
+                                <Badge color="error" badgeContent={cartContent}>
+                                    <ShoppingCartRoundedIcon />
+                                </Badge>
+                            </IconButton>
+                        </div>
+                    }
+                    <Drawer anchor='right' open={openCart} onClose={() => dispatch(CartReducerActions.closeCart())}>
                         <Cart></Cart>
                     </Drawer>
                 </Toolbar>

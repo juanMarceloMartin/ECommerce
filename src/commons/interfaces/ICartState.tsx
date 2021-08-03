@@ -2,5 +2,7 @@ import ICartItem from "./ICartItem";
 
 export default interface ICartState {
     list: ICartItem[],
-    total: number
+    total: number,
+    openCart: boolean,
+    displayCartIcon: boolean
 }

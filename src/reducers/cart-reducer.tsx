@@ -5,14 +5,18 @@ import { GlobalReducerActions } from './global-reducer';
 
 const CART_INITIAL_STATE = {
     list: new Array<ICartItem>(),
-    total: 0
+    total: 0,
+    openCart: false,
+    displayCartIcon: true
 }
 
 export const CART_REDUCER_TYPES = {
     ADD_PRODUCT: "ADD_PRODUCT",
     ADD_UNIT: "ADD_UNIT",
     SUBSTRACT_UNIT: "SUBSTRACT_UNIT",
-    REMOVE_ITEM: "REMOVE_ITEM"
+    REMOVE_ITEM: "REMOVE_ITEM",
+    SET_OPEN_CART: "SET_OPEN_CART",
+    SET_DISPLAY_CART_ICON: "SET_DISPLAY_CART_ICON"
 }
 
 function handleQtyChanges(state: ICartState, id: number, instruction: string) {
@@ -37,7 +41,7 @@ function handleQtyChanges(state: ICartState, id: number, instruction: string) {
         result.newTotal = result.newTotal - 1;
     }
 
-    return result;    
+    return result;
 }
 
 export const cartReducer = (state = CART_INITIAL_STATE, action: IReducerAction) => {
@@ -66,7 +70,7 @@ export const cartReducer = (state = CART_INITIAL_STATE, action: IReducerAction) 
                 total: stateAfterSubstraction.newTotal,
                 list: stateAfterSubstraction.updatedList
             }
-        
+
         case CART_REDUCER_TYPES.REMOVE_ITEM:
             const stateAfterRemovedItem = state.list.filter(item => item.id !== payload);
 
@@ -75,6 +79,19 @@ export const cartReducer = (state = CART_INITIAL_STATE, action: IReducerAction) 
                 list: stateAfterRemovedItem,
                 total: state.total - 1
             }
+
+        case CART_REDUCER_TYPES.SET_OPEN_CART:
+            return {
+                ...state,
+                openCart: payload
+            }
+
+        case CART_REDUCER_TYPES.SET_DISPLAY_CART_ICON:
+            return {
+                ...state,
+                displayCartIcon: payload
+            }
+
 
         default:
             return state;
@@ -118,8 +135,52 @@ const removeItem = (id: number) => {
     }
 }
 
+const openCart = () => {
+    return async (dispatch: any) => {
+        try {
+            dispatch({ type: CART_REDUCER_TYPES.SET_OPEN_CART, payload: true })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+};
+
+const closeCart = () => {
+    return async (dispatch: any) => {
+        try {
+            dispatch({ type: CART_REDUCER_TYPES.SET_OPEN_CART, payload: false })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+};
+
+const displayCartIcon = () => {
+    return async (dispatch: any) => {
+        try {
+            dispatch({ type: CART_REDUCER_TYPES.SET_DISPLAY_CART_ICON, payload: true })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+};
+
+const hideCartIcon = () => {
+    return async (dispatch: any) => {
+        try {
+            dispatch({ type: CART_REDUCER_TYPES.SET_DISPLAY_CART_ICON, payload: false })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+};
+
 export const CartReducerActions = {
     addOneUnit,
     substractOneUnit,
-    removeItem
+    removeItem,
+    openCart,
+    closeCart,
+    displayCartIcon,
+    hideCartIcon
 }

@@ -1,4 +1,5 @@
 import { FC, useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { makeStyles, Grid, Stepper, Step, Typography, StepLabel, Button, ListItem, ListItemIcon, List, ListItemText, Collapse, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
 import { ExpandMore, ExpandLess } from '@material-ui/icons';
 import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
@@ -8,6 +9,7 @@ import PaymentForm from '../paymentForm/payment-form';
 import PurchaseConfirmationForm from '../purchase-confirmation-form/purchase-confirmation-form';
 import './checkout-screen.css'
 import { useHistory } from 'react-router';
+import { CartReducerActions } from '../../reducers/cart-reducer';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -49,6 +51,7 @@ const useStyles = makeStyles((theme) => ({
 
 const CheckoutScreen: FC = () => {
     const classes = useStyles();
+    const dispatch = useDispatch();
     const [activeStep, setActiveStep] = useState(0);
     const steps = getSteps();
     const [openOrderSummary, setOpenOrderSummary] = useState(false);
@@ -92,6 +95,14 @@ const CheckoutScreen: FC = () => {
                 )
         }
     }
+
+    useEffect(() => {
+        dispatch(CartReducerActions.hideCartIcon());
+
+        return () => {
+            dispatch(CartReducerActions.displayCartIcon());
+        }
+    }, [])
 
     useEffect(() => {
         if (activeStep === steps.length) {
