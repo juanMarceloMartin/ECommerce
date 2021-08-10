@@ -4,7 +4,7 @@ import ICartState from '../commons/interfaces/ICartState';
 import { GlobalReducerActions } from './global-reducer';
 
 const CART_INITIAL_STATE = {
-    list: new Array<ICartItem>(),
+    list: JSON.parse(localStorage.getItem("cart") || "[]"),
     total: 0,
     openCart: false,
     displayCartIcon: true
@@ -49,13 +49,18 @@ export const cartReducer = (state = CART_INITIAL_STATE, action: IReducerAction) 
     const { type, payload } = action;
     switch (type) {
         case CART_REDUCER_TYPES.ADD_PRODUCT:
+            const updatedCart = [...state.list];
+            updatedCart.push(payload);
+            localStorage.setItem("cart", JSON.stringify(updatedCart));
+            
             return {
                 ...state,
                 cart: state.list.push(payload)
             }
 
         case CART_REDUCER_TYPES.ADD_UNIT:
-            const stateAfterAddition = handleQtyChanges(state, payload, "add")
+            const stateAfterAddition = handleQtyChanges(state, payload, "add");
+            localStorage.setItem("cart", JSON.stringify(stateAfterAddition.updatedList));
 
             return {
                 ...state,
@@ -64,7 +69,8 @@ export const cartReducer = (state = CART_INITIAL_STATE, action: IReducerAction) 
             }
 
         case CART_REDUCER_TYPES.SUBSTRACT_UNIT:
-            const stateAfterSubstraction = handleQtyChanges(state, payload, "substract")
+            const stateAfterSubstraction = handleQtyChanges(state, payload, "substract");
+            localStorage.setItem("cart", JSON.stringify(stateAfterSubstraction.updatedList));
 
             return {
                 ...state,
@@ -73,7 +79,8 @@ export const cartReducer = (state = CART_INITIAL_STATE, action: IReducerAction) 
             }
 
         case CART_REDUCER_TYPES.REMOVE_ITEM:
-            const stateAfterRemovedItem = state.list.filter(item => item.id !== payload);
+            const stateAfterRemovedItem = state.list.filter((item: ICartItem) => item.id !== payload);
+            localStorage.setItem("cart", JSON.stringify(stateAfterRemovedItem));
 
             return {
                 ...state,
@@ -94,6 +101,8 @@ export const cartReducer = (state = CART_INITIAL_STATE, action: IReducerAction) 
             }
 
         case CART_REDUCER_TYPES.RESET_CART:
+            localStorage.setItem("cart", JSON.stringify([]));
+
             return {
                 ...state,
                 list: []
