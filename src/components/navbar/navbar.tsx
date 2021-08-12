@@ -11,6 +11,9 @@ import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import { Link } from 'react-router-dom';
+import LoginButton from '../login-button/login-button';
+import LoggedInButton from '../logged-in-button/logged-in-button';
+import { useAuth0 } from "@auth0/auth0-react";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -39,6 +42,7 @@ const Navbar: FC = () => {
     const openCart = useSelector((state: IStore) => state.cart.openCart);
     const dispatch = useDispatch();
     const classes = useStyles();
+    const { user } = useAuth0();
 
     return (
         <div className={classes.root}>
@@ -62,6 +66,11 @@ const Navbar: FC = () => {
                                 </Badge>
                             </IconButton>
                         </div>
+                    }
+                    {user ?
+                        <LoggedInButton name={user?.given_name} />
+                        :
+                        <LoginButton />
                     }
                     <Drawer anchor='right' open={openCart} onClose={() => dispatch(CartReducerActions.closeCart())}>
                         <Cart></Cart>

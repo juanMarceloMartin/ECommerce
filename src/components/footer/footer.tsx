@@ -30,7 +30,7 @@ const Footer: FC = () => {
         <div className={classes.root}>
             <Grid container>
                 <Grid item sm={12} md={3}>
-                    <div style={{ paddingLeft: "20px" }}>
+                    <div key="contact" style={{ paddingLeft: "20px" }}>
                         <h2>Contact Us</h2>
                         <div className={classes.contactInfo}><CallIcon /> 555-555-5555</div>
                         <div className={classes.contactInfo}><MailIcon /> f-e-c@mail.com</div>
@@ -41,7 +41,7 @@ const Footer: FC = () => {
                     <div style={{ paddingLeft: "20px" }}>
                         <h2>Payment Methods</h2>
                         {paymentIcons.map((paymentMethod: string) => {
-                            return <img style={{ margin: "0 5px" }} src={`/payment-method-icons/${paymentMethod}.png`} alt="payment_method" />
+                            return <img key={`${paymentMethod}`} style={{ margin: "0 5px" }} src={`/payment-method-icons/${paymentMethod}.png`} alt="payment_method" />
                         })}
                     </div>
                 </Grid>
@@ -49,12 +49,12 @@ const Footer: FC = () => {
                     <div style={{ paddingLeft: "20px" }}>
                         <h2>Shipment Methods</h2>
                         {shipmentMethods.map((shipmentMethod: string) => {
-                            return <img style={{ margin: "0 5px" }} width={64} src={`/shipment-method-icons/${shipmentMethod}.png`} alt="shipment_method" />
+                            return <img key={`${shipmentMethod}`} style={{ margin: "0 5px" }} width={64} src={`/shipment-method-icons/${shipmentMethod}.png`} alt="shipment_method" />
                         })}
                     </div>
                 </Grid>
                 <Grid item  md={3}>
-                    <div style={{ paddingLeft: "20px" }}>
+                    <div key="media" style={{ paddingLeft: "20px" }}>
                         <h2>Social Media</h2>
                         <InstagramIcon fontSize="large" style={{ marginRight: "15px" }} />
                         <FacebookIcon fontSize="large" style={{ marginRight: "15px" }} />
