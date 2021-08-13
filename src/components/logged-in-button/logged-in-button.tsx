@@ -9,6 +9,13 @@ const useStyles = makeStyles(() => ({
         border: "none",
         fontWeight: "bold",
         width: "100px"
+    },
+    menu: {
+        "& .MuiPaper-root": {
+            backgroundColor: "black",
+            color: "white",
+            fontWeight: "bold"
+        }
     }
 }))
 
@@ -42,8 +49,9 @@ const LoggedInButton: FC<IProps> = ({ name }) => {
                 transformOrigin={{ vertical: "top", horizontal: "center" }}
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
+                className={classes.menu}
             >
-                <MenuItem style={{ background: "black" }} onClick={handleClose}><LogoutButton /></MenuItem>
+                <MenuItem onClick={handleClose}><LogoutButton /></MenuItem>
             </Menu>
         </div>
     );
