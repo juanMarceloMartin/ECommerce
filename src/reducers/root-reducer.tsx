@@ -4,11 +4,13 @@ import { cartReducer } from './cart-reducer';
 import { globalReducer } from './global-reducer';
 import { singleProductReducer } from './single-product-reducer';
 import { checkoutReducer } from './checkout-reducer';
+import { userReducer } from './user-reducer';
 
 export const rootReducer = combineReducers({
     global: globalReducer,
     products: productsReducer,
     cart: cartReducer,
     singleProduct: singleProductReducer,
-    checkout: checkoutReducer
+    checkout: checkoutReducer,
+    user: userReducer
 });

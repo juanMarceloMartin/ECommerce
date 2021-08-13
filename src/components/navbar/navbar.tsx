@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Drawer, Badge, makeStyles } from '@material-ui/core';
 import ShoppingCartRoundedIcon from '@material-ui/icons/ShoppingCartRounded';
@@ -14,6 +14,7 @@ import { Link } from 'react-router-dom';
 import LoginButton from '../login-button/login-button';
 import LoggedInButton from '../logged-in-button/logged-in-button';
 import { useAuth0 } from "@auth0/auth0-react";
+import { USER_REDUCER_TYPES } from '../../reducers/user-reducer';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -44,6 +45,11 @@ const Navbar: FC = () => {
     const classes = useStyles();
     const { user } = useAuth0();
 
+    useEffect(() => {
+        dispatch({ type: USER_REDUCER_TYPES.SET_ID, payload: user?.sub });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [user]);
+
     return (
         <div className={classes.root}>
             <AppBar position="fixed">
@@ -67,14 +73,14 @@ const Navbar: FC = () => {
                             </IconButton>
                         </div>
                     }
-                    {user ?
-                        <LoggedInButton name={user?.given_name} />
-                        :
-                        <LoginButton />
-                    }
                     <Drawer anchor='right' open={openCart} onClose={() => dispatch(CartReducerActions.closeCart())}>
                         <Cart></Cart>
                     </Drawer>
+                {user ?
+                    <LoggedInButton name={user?.given_name} />
+                    :
+                    <LoginButton />
+                }
                 </Toolbar>
             </AppBar>
         </div>

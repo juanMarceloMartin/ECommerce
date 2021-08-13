@@ -1,4 +1,5 @@
 import { FC, useState } from 'react';
+import { useHistory } from "react-router-dom";
 import { makeStyles, Menu, MenuItem } from '@material-ui/core';
 import LogoutButton from '../logout-button/logout-button';
 
@@ -25,6 +26,7 @@ interface IProps {
 
 const LoggedInButton: FC<IProps> = ({ name }) => {
     const classes = useStyles();
+    const history = useHistory();
     const [anchorEl, setAnchorEl] = useState(null);
 
     const handleClick = (event: any) => {
@@ -35,8 +37,17 @@ const LoggedInButton: FC<IProps> = ({ name }) => {
         setAnchorEl(null);
     };
 
+    const handleRedirect = () => {
+        setAnchorEl(null);
+        history.push("/order-history")
+    };
+
+    const setStyle = () => {
+        return window.location.pathname === "/checkout" ? { marginLeft: "auto", marginRight: "0" } : {};
+    }
+
     return (
-        <div>
+        <div style={setStyle()}>
             <button className={classes.button} onClick={handleClick}>
                 {name}
             </button>
@@ -51,6 +62,7 @@ const LoggedInButton: FC<IProps> = ({ name }) => {
                 onClose={handleClose}
                 className={classes.menu}
             >
+                <MenuItem onClick={handleRedirect}>Order History</MenuItem>
                 <MenuItem onClick={handleClose}><LogoutButton /></MenuItem>
             </Menu>
         </div>
