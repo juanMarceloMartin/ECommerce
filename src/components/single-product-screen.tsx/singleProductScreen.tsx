@@ -168,7 +168,7 @@ const SingleProductScreen: FC = () => {
                                 </>
                             }
                             <div className={classes.marginClass}>
-                                <ItemQuantityButtons quantity={selectedProductQuantity} handleDecrement={handleDecrement} handleIncrement={handleIncrement} />
+                                <ItemQuantityButtons quantity={selectedProductQuantity ? selectedProductQuantity : 1} handleDecrement={handleDecrement} handleIncrement={handleIncrement} />
                             </div>
                             <div>
                                 <AddToCartButton product={selectedProduct} quantity={selectedProductQuantity} />
