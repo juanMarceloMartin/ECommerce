@@ -43,11 +43,11 @@ const CartItem: FC<Props> = ({ item, cart, checkout }) => {
 
     function handleDecrement() {
         dispatch(CartReducerActions.substractOneUnit(item.id))
-    };
+    }
 
     function handleIncrement() {
         dispatch(CartReducerActions.addOneUnit(item.id))
-    };
+    }
 
     return (
         <div>
