@@ -77,7 +77,7 @@ const Navbar: FC = () => {
                         <Cart></Cart>
                     </Drawer>
                 {user ?
-                    <LoggedInButton name={user?.given_name} />
+                    <LoggedInButton name={user?.given_name ? user?.given_name : user?.nickname} />
                     :
                     <LoginButton />
                 }

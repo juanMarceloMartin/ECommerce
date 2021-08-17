@@ -47,7 +47,7 @@ const OrderSummary: FC<IProps> = ({ collapsed }) => {
                 shippingCost: 10,
                 orderNumber: uuidv1()
             };
-            dispatch({ type: USER_REDUCER_TYPES.SET_ORDER_HISTORY, payload: order })
+            dispatch({ type: USER_REDUCER_TYPES.ADD_NEW_ORDER, payload: order })
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [confirmedPurchase])
