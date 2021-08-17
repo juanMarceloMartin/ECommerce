@@ -1,5 +1,6 @@
 import { FC, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from "react-router-dom";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -14,7 +15,6 @@ import { Link } from "react-router-dom";
 const useStyles = makeStyles((theme) => ({
     image: {
         width: "100%",
-        height: "600px"
     },
     category: {
         background: "black",
@@ -29,7 +29,6 @@ const useStyles = makeStyles((theme) => ({
     },
     banner: {
         background: "#ccc",
-
         color: "white",
         fontSize: "20px",
         textAlign: "center",
@@ -46,6 +45,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Landing: FC = () => {
     const dispatch = useDispatch();
+    const history = useHistory();
     const categories = useSelector((state: IStore) => state.products.categories);
     const newProductsList = useSelector((state: IStore) => state.products.list)?.filter((product: any) => product.new);
     const classes = useStyles();
@@ -58,15 +58,18 @@ const Landing: FC = () => {
         slidesToScroll: 1,
         arrows: false,
         draggable: true,
-        accessibility: true
+        accessibility: true,
+        adaptiveHeight: true
     };
 
     function handleSelectCategory(category: string) {
-        if (category === "all") {
-            dispatch({ type: PRODUCTS_REDUCER_TYPES.SET_SELECTED_CATEGORY, payload: "all" })
+        if (category === "ALL") {
+            dispatch({ type: PRODUCTS_REDUCER_TYPES.SET_SELECTED_CATEGORY, payload: "ALL" })
         } else {
             dispatch({ type: PRODUCTS_REDUCER_TYPES.SET_SELECTED_CATEGORY, payload: category })
-        }
+        };
+
+        history.push("/products")
     }
 
     useEffect(() => {
@@ -86,7 +89,7 @@ const Landing: FC = () => {
             <Slider {...settings}>
                 {categories?.map((category: any) => {
                     let response = null;
-                    if (category.name !== "all") {
+                    if (category.name !== "ALL") {
                         response =
                             <div key={category.name}>
                                 <img className={classes.image} src={category.image} alt="" />
@@ -100,13 +103,10 @@ const Landing: FC = () => {
             </Slider>
             <h2 style={{ paddingLeft: "24px" }}>New Arrivals</h2>
             <ProductsWrapper productsList={newProductsList} />
-            <div className={classes.banner}>10% OFF SHIPPING</div>
             <div className={classes.buttonContainer}>
-                <Link to="/products">
-                    <Button onClick={() => handleSelectCategory("all")} size="large" variant="contained" color="primary">
-                        SEE ALL PRODUCTS
-                    </Button>
-                </Link>
+                <Button onClick={() => handleSelectCategory("ALL")} size="large" variant="contained" color="primary">
+                    SEE ALL PRODUCTS
+                </Button>
             </div>
         </div>
     )

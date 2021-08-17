@@ -79,7 +79,7 @@ const getCategories = () => {
         try {
             dispatch(GlobalReducerActions.showPageLoader());
             const response: any = await ProductsApi.getCategories();
-            response.push({ name: "all" })
+            response.push({ name: "ALL" })
             dispatch({ type: PRODUCTS_REDUCER_TYPES.SET_CATEGORIES, payload: response })
             dispatch(GlobalReducerActions.hidePageLoader());
         } catch (error) {
@@ -91,11 +91,12 @@ const getCategories = () => {
 const getListByCategory = (category: string) => {
     return async (dispatch: any) => {
         try {
+            const selectedCategory = category.toLowerCase();
             dispatch(GlobalReducerActions.showPageLoader());
-            const response = await ProductsApi.selectCategory(category);
+            const response = await ProductsApi.selectCategory(selectedCategory);
             dispatch({ type: PRODUCTS_REDUCER_TYPES.SET_LIST, payload: response })
-            dispatch({ type: PRODUCTS_REDUCER_TYPES.SET_SELECTED_CATEGORY, payload: category })
-            localStorage.setItem("selected_category", category);
+            dispatch({ type: PRODUCTS_REDUCER_TYPES.SET_SELECTED_CATEGORY, payload: selectedCategory })
+            localStorage.setItem("selected_category", selectedCategory);
             dispatch(GlobalReducerActions.hidePageLoader());
         } catch (error) {
             console.log(error)

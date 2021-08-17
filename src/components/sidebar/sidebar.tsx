@@ -42,19 +42,19 @@ const Sidebar: FC<IProps> = ({ title, items }) => {
     const dispatch = useDispatch();
 
     function handleSelectCategory(category: string) {
-        if (category === "all") {
+        if (category === "ALL") {
             dispatch(ProductsReducerActions.getList());
-            dispatch({ type: PRODUCTS_REDUCER_TYPES.SET_SELECTED_CATEGORY, payload: "all" })
+            dispatch({ type: PRODUCTS_REDUCER_TYPES.SET_SELECTED_CATEGORY, payload: "ALL" })
         } else {
             dispatch(ProductsReducerActions.getListByCategory(category));
         }
     }
 
     function setBorderStyle(category: string) {
-        if (selectedCategory === category) {
+        if (selectedCategory?.toLocaleLowerCase() === category?.toLowerCase()) {
             return { borderLeft: "5px solid black", fontWeight: 900 }
         }
-    };
+    }
 
     function renderContent() {
         return (

@@ -1,7 +1,17 @@
 import { FC } from 'react';
 import IProduct from '../../commons/interfaces/IProduct';
 import ProductCard from '../product-card/product-card';
-import { Grid } from '@material-ui/core';
+import { Grid, makeStyles } from '@material-ui/core';
+
+const useStyles = makeStyles({
+    root: {
+        paddingTop: "30px",
+        paddingLeft: '5%',
+        '@media(max-width: 405px)': {
+            paddingLeft: '0',
+        }
+    },
+});
 
 interface IProps {
     productsList: IProduct[]
@@ -9,13 +19,15 @@ interface IProps {
 
 const ProductsWrapper: FC<IProps> = (props) => {
     const { productsList } = props;
+    const classes = useStyles();
+
     return (
         <Grid
             container
             spacing={0}
             alignItems="center"
             justify="center"
-            style={{ paddingTop: "30px", paddingLeft: '5%' }}
+            className={classes.root}
         >
             {
                 productsList?.map((product: IProduct) => <ProductCard key={product.id} product={product} />)

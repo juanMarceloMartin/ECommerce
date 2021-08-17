@@ -5,9 +5,10 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import { store } from './store';
-import { ThemeProvider, createMuiTheme } from '@material-ui/core';
+import { ThemeProvider, createTheme } from '@material-ui/core';
+import { Auth0Provider } from "@auth0/auth0-react";
 
-const theme = createMuiTheme({
+const theme = createTheme({
   palette: {
     primary: {
       main: '#212121',
@@ -27,13 +28,20 @@ const theme = createMuiTheme({
   },
 })
 
+const domain: any = process.env.REACT_APP_AUTH0_DOMAIN;
+const clientId: any = process.env.REACT_APP_AUTH0_CLIENT_ID;
+
 ReactDOM.render(
   <Provider store={store}>
-    <React.StrictMode>
+    <Auth0Provider
+      domain={domain}
+      clientId={clientId}
+      redirectUri={window.location.origin}
+    >
       <ThemeProvider theme={theme}>
         <App />
       </ThemeProvider>
-    </React.StrictMode>
+    </Auth0Provider>
   </Provider>,
   document.getElementById('root')
 );

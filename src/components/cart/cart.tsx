@@ -1,5 +1,7 @@
 import { FC, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from "react-router-dom";
+import { CartReducerActions } from '../../reducers/cart-reducer';
 import IStore from '../../commons/interfaces/IStore';
 import { Button, makeStyles } from '@material-ui/core';
 import CartItem from '../cart-item/cart-item';
@@ -8,20 +10,30 @@ const useStyles = makeStyles({
   root: {
     paddingLeft: "10px",
     paddingRight: "15px",
-    width: "450px"
+    width: "450px",
+    '@media(max-width: 530px)': {
+      width: "340px"
+  },
   },
   checkOut: {
     width: "100%",
-    marginTop: "30px"
+    margin: "30px 0"
   }
 });
 
 const Cart: FC = () => {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const history = useHistory();
   const itemsList = useSelector((state: IStore) => state.cart.list);
   const totalQtyInCart = useSelector((state: IStore) => state.cart.total);
   const [subtotal, setSubtotal] = useState(0);
   const [list, setList] = useState(itemsList);
+
+  const handleCheckout = () => {
+    dispatch(CartReducerActions.closeCart());
+    history.push('/checkout')
+  }
 
   useEffect(() => {
     setList(itemsList);
@@ -39,7 +51,7 @@ const Cart: FC = () => {
           <div>
             <h1>Your order</h1>
             {
-              list?.map(item => <CartItem key={item.id} item={item} />)
+              list?.map(item => <CartItem key={item.id} item={item} cart={true} />)
             }
           </div>
           <div>
@@ -48,9 +60,9 @@ const Cart: FC = () => {
             <p>Estimated Shipping <span style={{ float: "right" }}>from $ 10.00</span> </p>
             <h2><strong>Estimated Total <span style={{ float: "right" }}>$ {(subtotal + 10).toFixed(2)}</span></strong></h2>
           </div>
-          <Button className={classes.checkOut} variant="contained" color="primary">
-            CHECK OUT HERE
-          </Button>
+            <Button onClick={() => handleCheckout()} className={classes.checkOut} variant="contained" color="primary">
+              CHECKOUT
+            </Button>
         </div>
         :
         <>

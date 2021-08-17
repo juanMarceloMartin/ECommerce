@@ -14,6 +14,9 @@ const useStyles = makeStyles({
     },
     '@media(max-width: 500px)': {
       marginLeft: "15%"
+    },
+    '@media(max-width: 405px)': {
+      marginLeft: "10%"
     }
   },
 });
@@ -33,7 +36,7 @@ const ProductCard: FC<any> = ({ product }) => {
 
   return (
     <>
-      <Grid item xs={12} sm={6} lg={3}>
+      <Grid item xs={12} sm={6} md={4} lg={3}>
         <Card className={classes.root}>
           <span onClick={() => handleSelectProduct(product.id, product.category)}>
             <CardActionArea>

@@ -4,11 +4,15 @@ import IProduct from '../commons/interfaces/IProduct';
 const url = 'https://fakestoreapi.com/products';
 
 async function getList() {
+    const newItemsIdList = [9, 5, 1, 15]
     try {
-        const response = await axios.get(url)
-        response.data.forEach((item: any) => {
-            const isItemNew = Math.random() > 0.70;
-            item.new = isItemNew;
+        const response = await axios.get(url);
+        newItemsIdList.forEach((id: number) => {
+            response.data.forEach((item: any) => {
+                if (id === item.id) {
+                    item.new = true;
+                }
+            })
         })
         return response.data;
     } catch (error) {
@@ -17,12 +21,16 @@ async function getList() {
 }
 
 async function getLisOfNewItems() {
+    const newItemsIdList = [9, 5, 1, 15]
     try {
         const response = await axios.get(url)
-        response.data.forEach((item: any) => {
-            const isItemNew = Math.random() > 0.70;
-            item.new = isItemNew;
-        })
+        newItemsIdList.forEach((id: number) => {
+            response.data.forEach((item: any) => {
+                if (id === item.id) {
+                    item.new = true;
+                }
+            })
+        });
         return response.data.filter((item: any) => item.new);
     } catch (error) {
         console.log(error)
@@ -36,14 +44,15 @@ async function getCategories() {
         const response = await axios.get(`${url}/categories`)
         const result: {}[] = [];
         response.data.forEach((element: string) => {
+            const categoryObj = { name: element.toUpperCase() }
             if (element === "electronics") {
-                result.push({ name: element, image: "/landing-electronics.jpg" })
+                result.push({ ...categoryObj, image: "/landing/tech.jpg" })
             } else if (element === "jewelery") {
-                result.push({ name: element, image: "/landing-jewelery.jpg" })
+                result.push({ ...categoryObj, image: "/landing/jewelery.jpg" })
             } else if (element === "men's clothing") {
-                result.push({ name: element, image: "/landing-mens-clothing.jpg" })
+                result.push({ ...categoryObj, image: "/landing/mens-clothing.jpg" })
             } else if (element === "women's clothing") {
-                result.push({ name: element, image: "/landing-womens-clothing.jpg" })
+                result.push({ ...categoryObj, image: "/landing/womans-clothing.jpg" })
             }
         })
         return result;

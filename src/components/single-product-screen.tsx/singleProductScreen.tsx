@@ -3,9 +3,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import { makeStyles, Grid, ButtonGroup, Button } from '@material-ui/core';
 import IStore from '../../commons/interfaces/IStore';
 import AddToCartButton from '../addToCartButton/add-to-cart-button';
+import ItemQuantityButtons from '../itemQuantityButtons/itemQuantityButtons';
 import { SingleProductReducerActions } from '../../reducers/single-product-reducer';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import ProductsWrapper from '../products-wrapper/products-wrapper';
+import { CartReducerActions } from '../../reducers/cart-reducer';
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -71,14 +73,15 @@ const SingleProductScreen: FC = () => {
     const selectedProductImages = useSelector((state: IStore) => state.singleProduct.product.image);
     const relatedProducts = useSelector((state: IStore) => state.singleProduct.relatedProducts);
     const isPageLoading = useSelector((state: IStore) => state.global.isPageLoading);
+    const cart = useSelector((state: IStore) => state.cart.list);
+    const selectedProductQuantity = cart.filter(product => product.id === Number(selectedProductId))[0]?.quantity;
     const [mainImage, setMainImage] = useState("");
     const [selectedSize, setSelectedSize] = useState('');
     const [selectedColor, setSelectedColor] = useState('');
-    const [qty, setQty] = useState(1);
 
     useEffect(() => {
         dispatch(SingleProductReducerActions.getSelectedProduct(selectedProductId));
-        dispatch(SingleProductReducerActions.getRelatedProducts(selectedProductId));
+        dispatch(SingleProductReducerActions.getRelatedProducts(Number(selectedProductId)));
         window.scrollTo(0, 0);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedProductId])
@@ -109,12 +112,12 @@ const SingleProductScreen: FC = () => {
     }
 
     function handleIncrement() {
-        setQty(qty + 1);
+        dispatch(CartReducerActions.addOneUnit(Number(selectedProductId)))
     }
 
     function handleDecrement() {
-        if (qty > 1) {
-            setQty(qty - 1);
+        if (selectedProductQuantity > 1) {
+            dispatch(CartReducerActions.substractOneUnit(Number(selectedProductId)))
         }
     }
 
@@ -165,14 +168,10 @@ const SingleProductScreen: FC = () => {
                                 </>
                             }
                             <div className={classes.marginClass}>
-                                <ButtonGroup size="medium" color="primary" aria-label="large outlined primary button group">
-                                    <Button onClick={handleDecrement}>-</Button>
-                                    <Button>{qty}</Button>
-                                    <Button onClick={handleIncrement}>+</Button>
-                                </ButtonGroup>
+                                <ItemQuantityButtons quantity={selectedProductQuantity} handleDecrement={handleDecrement} handleIncrement={handleIncrement} />
                             </div>
                             <div>
-                                <AddToCartButton product={selectedProduct} quantity={qty} />
+                                <AddToCartButton product={selectedProduct} quantity={selectedProductQuantity} />
                             </div>
                         </Grid>
                     </Grid>

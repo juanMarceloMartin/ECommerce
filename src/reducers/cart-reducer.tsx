@@ -4,15 +4,20 @@ import ICartState from '../commons/interfaces/ICartState';
 import { GlobalReducerActions } from './global-reducer';
 
 const CART_INITIAL_STATE = {
-    list: new Array<ICartItem>(),
-    total: 0
+    list: JSON.parse(localStorage.getItem("cart") || "[]"),
+    total: 0,
+    openCart: false,
+    displayCartIcon: true
 }
 
 export const CART_REDUCER_TYPES = {
     ADD_PRODUCT: "ADD_PRODUCT",
     ADD_UNIT: "ADD_UNIT",
     SUBSTRACT_UNIT: "SUBSTRACT_UNIT",
-    REMOVE_ITEM: "REMOVE_ITEM"
+    REMOVE_ITEM: "REMOVE_ITEM",
+    SET_OPEN_CART: "SET_OPEN_CART",
+    SET_DISPLAY_CART_ICON: "SET_DISPLAY_CART_ICON",
+    RESET_CART: "RESET_CART"
 }
 
 function handleQtyChanges(state: ICartState, id: number, instruction: string) {
@@ -37,20 +42,25 @@ function handleQtyChanges(state: ICartState, id: number, instruction: string) {
         result.newTotal = result.newTotal - 1;
     }
 
-    return result;    
+    return result;
 }
 
 export const cartReducer = (state = CART_INITIAL_STATE, action: IReducerAction) => {
     const { type, payload } = action;
     switch (type) {
         case CART_REDUCER_TYPES.ADD_PRODUCT:
+            const updatedCart = [...state.list];
+            updatedCart.push(payload);
+            localStorage.setItem("cart", JSON.stringify(updatedCart));
+            
             return {
                 ...state,
                 cart: state.list.push(payload)
             }
 
         case CART_REDUCER_TYPES.ADD_UNIT:
-            const stateAfterAddition = handleQtyChanges(state, payload, "add")
+            const stateAfterAddition = handleQtyChanges(state, payload, "add");
+            localStorage.setItem("cart", JSON.stringify(stateAfterAddition.updatedList));
 
             return {
                 ...state,
@@ -59,22 +69,45 @@ export const cartReducer = (state = CART_INITIAL_STATE, action: IReducerAction) 
             }
 
         case CART_REDUCER_TYPES.SUBSTRACT_UNIT:
-            const stateAfterSubstraction = handleQtyChanges(state, payload, "substract")
+            const stateAfterSubstraction = handleQtyChanges(state, payload, "substract");
+            localStorage.setItem("cart", JSON.stringify(stateAfterSubstraction.updatedList));
 
             return {
                 ...state,
                 total: stateAfterSubstraction.newTotal,
                 list: stateAfterSubstraction.updatedList
             }
-        
+
         case CART_REDUCER_TYPES.REMOVE_ITEM:
-            const stateAfterRemovedItem = state.list.filter(item => item.id !== payload);
+            const stateAfterRemovedItem = state.list.filter((item: ICartItem) => item.id !== payload);
+            localStorage.setItem("cart", JSON.stringify(stateAfterRemovedItem));
 
             return {
                 ...state,
                 list: stateAfterRemovedItem,
                 total: state.total - 1
             }
+
+        case CART_REDUCER_TYPES.SET_OPEN_CART:
+            return {
+                ...state,
+                openCart: payload
+            }
+
+        case CART_REDUCER_TYPES.SET_DISPLAY_CART_ICON:
+            return {
+                ...state,
+                displayCartIcon: payload
+            }
+
+        case CART_REDUCER_TYPES.RESET_CART:
+            localStorage.setItem("cart", JSON.stringify([]));
+
+            return {
+                ...state,
+                list: []
+            }
+
 
         default:
             return state;
@@ -118,8 +151,52 @@ const removeItem = (id: number) => {
     }
 }
 
+const openCart = () => {
+    return async (dispatch: any) => {
+        try {
+            dispatch({ type: CART_REDUCER_TYPES.SET_OPEN_CART, payload: true })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+};
+
+const closeCart = () => {
+    return async (dispatch: any) => {
+        try {
+            dispatch({ type: CART_REDUCER_TYPES.SET_OPEN_CART, payload: false })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+};
+
+const displayCartIcon = () => {
+    return async (dispatch: any) => {
+        try {
+            dispatch({ type: CART_REDUCER_TYPES.SET_DISPLAY_CART_ICON, payload: true })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+};
+
+const hideCartIcon = () => {
+    return async (dispatch: any) => {
+        try {
+            dispatch({ type: CART_REDUCER_TYPES.SET_DISPLAY_CART_ICON, payload: false })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+};
+
 export const CartReducerActions = {
     addOneUnit,
     substractOneUnit,
-    removeItem
+    removeItem,
+    openCart,
+    closeCart,
+    displayCartIcon,
+    hideCartIcon
 }
