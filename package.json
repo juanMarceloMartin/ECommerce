@@ -1,5 +1,4 @@
 {
-  "homepage": "https://juanMarceloMartin.github.io/ECommerce",
   "name": "e-commerce",
   "version": "0.1.0",
   "private": true,
@@ -38,8 +37,6 @@
     "web-vitals": "^1.0.1"
   },
   "scripts": {
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -b master -d build",
     "start": "(set PORT=3006 || export PORT=3006) && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
