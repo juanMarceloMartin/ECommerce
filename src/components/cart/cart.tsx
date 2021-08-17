@@ -10,7 +10,10 @@ const useStyles = makeStyles({
   root: {
     paddingLeft: "10px",
     paddingRight: "15px",
-    width: "450px"
+    width: "450px",
+    '@media(max-width: 530px)': {
+      width: "340px"
+  },
   },
   checkOut: {
     width: "100%",
