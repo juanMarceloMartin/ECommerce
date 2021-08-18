@@ -8,7 +8,8 @@ const useStyles = makeStyles(() => ({
         cursor: "pointer",
         border: "none",
         fontWeight: "bold",
-        width: "100px"
+        width: "100px",
+        float: "right"
     }
 }))
 

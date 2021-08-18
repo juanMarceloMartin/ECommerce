@@ -96,7 +96,7 @@ const Landing: FC = () => {
                                 response =
                                     <div key={category.name}>
                                         <img className={classes.image} src={category.image} alt="" />
-                                        <Link to="/products">
+                                        <Link style={{ textDecoration: 'none' }} to="/products">
                                             <div onClick={() => handleSelectCategory(category.name)} className={classes.category}> {category.name}</div>
                                         </Link>
                                     </div>

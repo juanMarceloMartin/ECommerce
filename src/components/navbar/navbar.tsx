@@ -50,6 +50,14 @@ const Navbar: FC = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user]);
 
+    const setLogInButtonStyle = () => {
+        let response = {};
+        if (window.location.pathname === "/checkout") {
+            response = { marginLeft: "auto" };
+        }
+        return response;
+    }
+
     return (
         <div className={classes.root}>
             <AppBar position="fixed">
@@ -76,11 +84,13 @@ const Navbar: FC = () => {
                     <Drawer anchor='right' open={openCart} onClose={() => dispatch(CartReducerActions.closeCart())}>
                         <Cart></Cart>
                     </Drawer>
-                {user ?
-                    <LoggedInButton name={user?.given_name ? user?.given_name : user?.nickname} />
-                    :
-                    <LoginButton />
-                }
+                    {user ?
+                        <LoggedInButton name={user?.given_name ? user?.given_name : user?.nickname} />
+                        :
+                        <div style={setLogInButtonStyle()}>
+                            <LoginButton />
+                        </div>
+                    }
                 </Toolbar>
             </AppBar>
         </div>
