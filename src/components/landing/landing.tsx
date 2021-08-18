@@ -48,6 +48,7 @@ const Landing: FC = () => {
     const history = useHistory();
     const categories = useSelector((state: IStore) => state.products.categories);
     const newProductsList = useSelector((state: IStore) => state.products.list)?.filter((product: any) => product.new);
+    const isPageLoading = useSelector((state: IStore) => state.global.isPageLoading);
     const classes = useStyles();
 
     const settings = {
@@ -101,13 +102,17 @@ const Landing: FC = () => {
                     return response;
                 })}
             </Slider>
-            <h2 style={{ paddingLeft: "24px" }}>New Arrivals</h2>
-            <ProductsWrapper productsList={newProductsList} />
-            <div className={classes.buttonContainer}>
-                <Button onClick={() => handleSelectCategory("ALL")} size="large" variant="contained" color="primary">
-                    SEE ALL PRODUCTS
-                </Button>
-            </div>
+            {!isPageLoading &&
+                <>
+                    <h2 style={{ paddingLeft: "24px" }}>New Arrivals</h2>
+                    <ProductsWrapper productsList={newProductsList} />
+                    <div className={classes.buttonContainer}>
+                        <Button onClick={() => handleSelectCategory("ALL")} size="large" variant="contained" color="primary">
+                            SEE ALL PRODUCTS
+                        </Button>
+                    </div>
+                </>
+            }
         </div>
     )
 }
