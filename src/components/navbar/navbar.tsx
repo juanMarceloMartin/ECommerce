@@ -33,6 +33,16 @@ const useStyles = makeStyles((theme) => ({
     },
     navTitle: {
         color: "white",
+        '@media(max-width: 550px)': {
+            display: 'none'
+        }
+    },
+    compressedNavTitle: {
+        color: "white",
+        display: "none",
+        '@media(max-width: 550px)': {
+            display: 'inline'
+        }
     }
 }));
 
@@ -71,6 +81,7 @@ const Navbar: FC = () => {
                     }
                     <Link to="/" style={{ textDecoration: "none" }}>
                         <h1 className={classes.navTitle}>FAK-E-COMMERCE</h1>
+                        <h1 className={classes.compressedNavTitle}>F-E-C</h1>
                     </Link>
                     {displayCartIcon &&
                         <div style={{ marginLeft: "auto" }}>
