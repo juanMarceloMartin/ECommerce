@@ -78,19 +78,8 @@ const SingleProductScreen: FC = () => {
     const [mainImage, setMainImage] = useState("");
     const [selectedSize, setSelectedSize] = useState('');
     const [selectedColor, setSelectedColor] = useState('');
-
-    useEffect(() => {
-        dispatch(SingleProductReducerActions.getSelectedProduct(selectedProductId));
-        dispatch(SingleProductReducerActions.getRelatedProducts(Number(selectedProductId)));
-        window.scrollTo(0, 0);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [selectedProductId])
-
-    useEffect(() => {
-        if (selectedProductImages) {
-            setMainImage(selectedProductImages[0]);
-        }
-    }, [selectedProductImages])
+    const [qty, setQty] = useState(1);
+    const itemInCart = cart?.filter(item => item.id === Number(selectedProductId)).length;
 
     function renderSizeButton(size: string) {
         let response = <Button onClick={() => setSelectedSize(size)}>{size.toUpperCase()}</Button>;
@@ -111,15 +100,50 @@ const SingleProductScreen: FC = () => {
         return response;
     }
 
+    function setQuantityInfo() {
+        let response = qty;
+        if (itemInCart) {
+            response = selectedProductQuantity;
+        }
+        return response;
+    }
+
     function handleIncrement() {
-        dispatch(CartReducerActions.addOneUnit(Number(selectedProductId)))
+        if (itemInCart) {
+            dispatch(CartReducerActions.addOneUnit(Number(selectedProductId)))
+        } else {
+            setQty(qty + 1);
+        }
     }
 
     function handleDecrement() {
-        if (selectedProductQuantity > 1) {
-            dispatch(CartReducerActions.substractOneUnit(Number(selectedProductId)))
+        if (itemInCart) {
+            if (selectedProductQuantity > 1) {
+                dispatch(CartReducerActions.substractOneUnit(Number(selectedProductId)))
+            }
+        } else {
+            if (qty > 1) {
+                setQty(qty - 1);
+            }
         }
     }
+
+    useEffect(() => {
+        setQty(1);
+    }, [selectedProductQuantity]);
+
+    useEffect(() => {
+        dispatch(SingleProductReducerActions.getSelectedProduct(selectedProductId));
+        dispatch(SingleProductReducerActions.getRelatedProducts(Number(selectedProductId)));
+        window.scrollTo(0, 0);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [selectedProductId])
+
+    useEffect(() => {
+        if (selectedProductImages) {
+            setMainImage(selectedProductImages[0]);
+        }
+    }, [selectedProductImages])
 
     return (
         <div style={{ paddingTop: "50px" }}>
@@ -168,10 +192,10 @@ const SingleProductScreen: FC = () => {
                                 </>
                             }
                             <div className={classes.marginClass}>
-                                <ItemQuantityButtons quantity={selectedProductQuantity ? selectedProductQuantity : 1} handleDecrement={handleDecrement} handleIncrement={handleIncrement} />
+                                <ItemQuantityButtons quantity={setQuantityInfo()} handleDecrement={handleDecrement} handleIncrement={handleIncrement} />
                             </div>
                             <div>
-                                <AddToCartButton product={selectedProduct} quantity={selectedProductQuantity} />
+                                <AddToCartButton product={selectedProduct} quantity={setQuantityInfo()} />
                             </div>
                         </Grid>
                     </Grid>
