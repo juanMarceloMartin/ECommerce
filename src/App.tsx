@@ -16,7 +16,7 @@ function App() {
       <Router>
         <Navbar />
         <PageLoader />
-        <div style={{ paddingTop: "64px", background: "white", minHeight: "100vh" }}>
+        <div style={{ paddingTop: "55px", background: "white", minHeight: "100vh" }}>
           <Switch>
             <Route exact path="/" component={Landing}></Route>
             <Route exact path="/product" component={SingleProductScreen}></Route>

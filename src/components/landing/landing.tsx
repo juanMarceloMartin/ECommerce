@@ -89,21 +89,23 @@ const Landing: FC = () => {
         <div>
             {!isPageLoading &&
                 <>
-                    <Slider {...settings}>
-                        {categories?.map((category: any) => {
-                            let response = null;
-                            if (category.name !== "ALL") {
-                                response =
-                                    <div key={category.name}>
-                                        <img className={classes.image} src={category.image} alt="" />
-                                        <Link style={{ textDecoration: 'none' }} to="/products">
-                                            <div onClick={() => handleSelectCategory(category.name)} className={classes.category}> {category.name}</div>
-                                        </Link>
-                                    </div>
-                            };
-                            return response;
-                        })}
-                    </Slider>
+                    <div style={{ marginBottom: "60px" }}>
+                        <Slider {...settings}>
+                            {categories?.map((category: any) => {
+                                let response = null;
+                                if (category.name !== "ALL") {
+                                    response =
+                                        <div key={category.name}>
+                                            <img className={classes.image} src={category.image} alt="" />
+                                            <Link style={{ textDecoration: 'none' }} to="/products">
+                                                <div onClick={() => handleSelectCategory(category.name)} className={classes.category}> {category.name}</div>
+                                            </Link>
+                                        </div>
+                                };
+                                return response;
+                            })}
+                        </Slider>
+                    </div>
                     <h2 style={{ paddingLeft: "24px" }}>New Arrivals</h2>
                     <ProductsWrapper productsList={newProductsList} />
                     <div className={classes.buttonContainer}>
